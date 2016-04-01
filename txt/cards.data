@@ -1,0 +1,8 @@
+1 5 Guessing Game$ Pick an opponent and guess a non-Guess card.  If they have it, they are out$
+2 2 Peeping Tom$ Look at an opponent's hand$
+3 2 Enmity$ Pick an opponent, lowest card is out$
+4 2 Protection$ Unaffected by other cards for one round$
+5 2 Discard$ Target player discards hand$
+6 1 Tradesies$ Target player swaps hand with you$
+7 1 Middle Management$ If you have a discard or tradesies, discard this card$
+8 1 Diploma$ If you get rid of this, you lose..$
