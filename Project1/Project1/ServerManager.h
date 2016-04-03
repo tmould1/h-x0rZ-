@@ -20,6 +20,8 @@ private :
 
 	bool serverStatus = true;
 
+	ClientManager * cm;
+
 
 #ifdef __linux__
 	fd_set descSet;
@@ -37,5 +39,6 @@ public:
 	void checkSockets();
 	string getMsgFromSocket(TCPSocket & inSock);
 	//void checkNewConnection();
+	void registerClientManager( ClientManager & myCM);
 
 };

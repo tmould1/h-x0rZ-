@@ -1,5 +1,7 @@
 #include "Client.h"
 
+ClientManager* ClientManager::_instance = NULL;
+
 bool Client::assignSocket(TCPServerSocket & server) {
 	bool status = false;
 	mySock = server.accept();
@@ -43,6 +45,13 @@ void Client::recMsg(TCPSocket & inSock) {
 	sm = sm->get();
 	string inBuf;
 	inBuf = sm->getMsgFromSocket(inSock);
+}
+
+ClientManager* ClientManager::get() {
+	if (!_instance) {
+		_instance = new ClientManager;
+	}
+	return _instance;
 }
 
 

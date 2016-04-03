@@ -12,14 +12,7 @@ ServerManager::~ServerManager() {
 }
 
 void ServerManager::acquireClient(Client & inClient) {
-	//Client * lastClient;
-	//if (!clientList) {
-	//	clientList = &inClient;
-	//}
-	//else {
-	//	lastClient = getLastClient();
-	//	lastClient->setNextClient(&inClient);
-	//}
+
 }
 
 //Client* ServerManager::getLastClient() {
@@ -105,4 +98,8 @@ string ServerManager::getMsgFromSocket(TCPSocket & inSock) {
 		std::fill(buf, buf + len, 0);
 	}
 	return fMsg;
+}
+
+void ServerManager::registerClientManager() {
+	cm = cm->get();
 }
