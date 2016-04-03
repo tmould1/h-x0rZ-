@@ -10,7 +10,7 @@
 
 
 class ServerManager {
-private : 
+private :
 	static ServerManager* _instance;
 
 	TCPServerSocket servSock;
@@ -26,7 +26,7 @@ private :
 #endif
 
 public:
-	ServerManager* get();
+	static ServerManager* get();
 	ServerManager() : servSock(defaultPort), serverStatus(false) {};
 	ServerManager(int port) : servSock(port) {};
 	~ServerManager();
