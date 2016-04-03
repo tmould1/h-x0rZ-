@@ -1,4 +1,5 @@
 #include "ServerManager.h"
+#include <cstring>
 
 ServerManager* ServerManager::_instance = NULL;
 

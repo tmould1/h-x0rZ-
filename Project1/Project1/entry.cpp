@@ -3,6 +3,7 @@
    //   H@x0rZ!
 
 #include "ServerManager.h"
+#include <iostream>
 
 void GameLoop( ServerManager & boss );
 
@@ -16,8 +17,10 @@ int main(int argc, char * argv[]) {
 	servBoss->acquireClient(testClient);
 	servBoss->acquireClient(testClient2);
 
+        cout << " is Running is " << (servBoss->isRunning()? "True" : "False") << endl;
+
 	GameLoop( *servBoss );
-	
+
 	return 0;
 }
 
@@ -25,6 +28,7 @@ void GameLoop( ServerManager & boss) {
 
 	while (boss.isRunning()) {
 		boss.checkSockets();
+		cout << " Looped " << endl;
 	}
-	
+
 }

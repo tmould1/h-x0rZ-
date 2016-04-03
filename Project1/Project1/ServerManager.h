@@ -1,13 +1,16 @@
-#pragma once
+#ifndef SERVERMANAGER_H
+#define SERVERMANAGER_H
 
 #include <mutex>
 #include <thread>
 #ifdef __linux__
 #include <sys/time.h>
 #endif
+
 #include "Client.h"
 #include "PracticalSocket.h"
 
+class Client;
 
 class ServerManager {
 private :
@@ -39,3 +42,6 @@ public:
 	//void checkNewConnection();
 
 };
+
+
+#endif
