@@ -11,6 +11,8 @@
 
 class ServerManager {
 private : 
+	static ServerManager* _instance;
+
 	TCPServerSocket servSock;
 	int defaultPort = 9999;
 
@@ -24,6 +26,12 @@ private :
 #endif
 
 public:
+	static ServerManager* get() {
+		if ( _instance == NULL ) {
+			_instance = new ServerManager();
+		}
+		return _instance;
+	}
 	ServerManager() : servSock(defaultPort), serverStatus(false) {};
 	ServerManager(int port) : servSock(port) {};
 	~ServerManager();

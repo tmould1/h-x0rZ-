@@ -7,14 +7,16 @@
 void GameLoop( ServerManager & boss );
 
 int main(int argc, char * argv[]) {
-	ServerManager servBoss; // Default Constructor sets port to 9999
+	ServerManager * servBoss; // Default Constructor sets port to 9999
 	Client testClient;
 	Client testClient2;
 
-	servBoss.acquireClient(testClient);
-	servBoss.acquireClient(testClient2);
+	servBoss = servBoss->get();
 
-	GameLoop( servBoss );
+	servBoss->acquireClient(testClient);
+	servBoss->acquireClient(testClient2);
+
+	GameLoop( *servBoss );
 	
 	return 0;
 }

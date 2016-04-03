@@ -1,5 +1,6 @@
 #include "ServerManager.h"
 
+
 ServerManager::~ServerManager() {
 	//Client * tmp = clientList;
 	//while (tmp) {
