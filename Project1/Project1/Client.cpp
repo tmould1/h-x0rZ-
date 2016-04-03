@@ -23,10 +23,43 @@ Client Client::operator=(const Client obj) {
 //}
 
 int Client::getSocket() {
-	return (mySock ? mySock->getSockDesc() : 0);
+	return (mySock ? mySock->getSockDesc() : -1);
 }
 
 Client::Client() {
 	mySock = NULL;
 	//nextClient = NULL;
+}
+
+bool ClientManager::findClient(Client & tClient) {
+	vector<Client>::iterator iClient;
+	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
+		if ( (*iClient).getSocket() != tClient.getSocket() ) {
+			it = iClient;
+		}
+	}
+}
+
+// Client Manager Section BEGIN
+ClientManager::ClientManager() {
+	it = clientVec.begin(); 
+	it = clientVec.insert(it, zeroClient);
+}
+
+bool ClientManager::addClient(Client & inClient) {
+	it = clientVec.insert(it, inClient);
+	return true;
+}
+
+bool ClientManager::removeClient(Client & outClient) {
+	// Add Mutex, Semaphore, or Monitor
+	// Critical Section BEGIN
+	if (findClient(outClient)) {
+		clientVec.erase(it);
+	}
+	// Critical Section END
+}
+
+Client& ClientManager::getClient(string name) {
+
 }
