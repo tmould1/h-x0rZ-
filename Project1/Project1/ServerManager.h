@@ -21,7 +21,9 @@ private :
 
 	const int maxClients = 100;
 
-	bool serverStatus = true;
+	bool serverStatus;
+
+	ClientManager * cm;
 
 
 #ifdef __linux__
@@ -40,6 +42,7 @@ public:
 	void checkSockets();
 	string getMsgFromSocket(TCPSocket & inSock);
 	//void checkNewConnection();
+	void registerClientManager();
 
 };
 
