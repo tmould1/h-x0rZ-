@@ -70,10 +70,10 @@ void ServerManager::checkSockets() {
 
 	// If Server Socket has something, it's a new connection
 	if (FD_ISSET(serverSocket, &descSet)) {
-		dummyClient = new Client();
-		dummyClient->assignSocket(this->servSock);
-		temp = getLastClient();
-		temp->setNextClient(dummyClient);
+//		dummyClient = new Client();
+//		dummyClient->assignSocket(this->servSock);
+//		temp = getLastClient();
+//		temp->setNextClient(dummyClient);
 	}
 
 	// Otherwise it is I/O
