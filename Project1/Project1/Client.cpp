@@ -23,7 +23,7 @@ Client Client::operator=(const Client obj) {
 //}
 
 int Client::getSocket() {
-	return (mySock ? mySock->getSockDesc() : 0);
+	return (mySock ? mySock->getSockDesc() : -1);
 }
 
 Client::Client() {
