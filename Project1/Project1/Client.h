@@ -22,4 +22,14 @@ public:
 class ClientManager {
 private:
 	vector<Client> clientVec;
+	vector<Client>::iterator it;
+	Client zeroClient;
+protected:
+	bool findClient(Client & tClient);
+public:
+	ClientManager();
+	bool addClient(Client & inClient);
+	bool removeClient( Client & outClient );
+	Client & getClient( string name );
+
 };
