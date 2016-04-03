@@ -101,6 +101,10 @@ Socket::Socket(int type, int protocol) throw(SocketException) {
 	}
 }
 
+void Socket::operator=(const Socket &sock) {
+	sockDesc = sock.sockDesc;
+}
+
 Socket::Socket(int sockDesc) {
 	this->sockDesc = sockDesc;
 }

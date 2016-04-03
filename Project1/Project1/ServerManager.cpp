@@ -1,6 +1,5 @@
 #include "ServerManager.h"
 
-
 ServerManager* ServerManager::_instance = NULL;
 
 ServerManager::~ServerManager() {
@@ -90,4 +89,20 @@ ServerManager* ServerManager::get() {
 		_instance = new ServerManager;
 	}
 	return _instance;
+}
+
+string ServerManager::getMsgFromSocket(TCPSocket & inSock) {
+	int msgLength;
+	const int maxBuf = 255;
+	char buf[maxBuf];
+	string fMsg;
+	size_t len;
+
+	while (inSock.recv(buf, maxBuf) > 0) {
+		len = strlen(buf);
+		msgLength += len;
+		fMsg.append(buf);
+		std::fill(buf, buf + len, 0);
+	}
+	return fMsg;
 }

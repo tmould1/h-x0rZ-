@@ -131,6 +131,8 @@ public:
 private:
 	// Prevent the user from trying to use value semantics on this object
 	Socket(const Socket &sock);
+
+public:
 	void operator=(const Socket &sock);
 
 protected:

@@ -2,11 +2,15 @@
 
 #include <vector>
 #include "PracticalSocket.h"
+#include "ServerManager.h"
 
 class Client {
 private :
 	TCPSocket * mySock;
 	//Client * nextClient;
+	vector<string> inMsg;
+	vector<string>::iterator msgIter;
+	ServerManager * sm;
 
 public:
 	Client operator=(const Client obj);
@@ -14,6 +18,9 @@ public:
 	//~Client();
 	bool assignSocket(TCPServerSocket & server);
 	int getSocket();
+	void putMsg(string msg);
+	string getMsg();
+	void recMsg(TCPSocket & inSock);
 //	Client* getNextClient();
 	//void setNextClient( Client * next );
 };

@@ -35,6 +35,7 @@ public:
 	bool isRunning();
 	void abort();
 	void checkSockets();
+	string getMsgFromSocket(TCPSocket & inSock);
 	//void checkNewConnection();
 
 };

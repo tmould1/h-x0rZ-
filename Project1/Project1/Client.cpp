@@ -31,6 +31,23 @@ Client::Client() {
 	//nextClient = NULL;
 }
 
+void Client::putMsg(string msg) {
+	inMsg.push_back(msg);
+}
+
+string Client::getMsg() {
+
+}
+
+void Client::recMsg(TCPSocket & inSock) {
+	sm = sm->get();
+	string inBuf;
+	inBuf = sm->getMsgFromSocket(inSock);
+}
+
+
+// Client Manager Section BEGIN
+
 bool ClientManager::findClient(Client & tClient) {
 	vector<Client>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
@@ -40,7 +57,6 @@ bool ClientManager::findClient(Client & tClient) {
 	}
 }
 
-// Client Manager Section BEGIN
 ClientManager::ClientManager() {
 	it = clientVec.begin(); 
 	it = clientVec.insert(it, zeroClient);
@@ -63,3 +79,4 @@ bool ClientManager::removeClient(Client & outClient) {
 Client& ClientManager::getClient(string name) {
 
 }
+
