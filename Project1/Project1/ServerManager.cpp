@@ -83,3 +83,9 @@ void ServerManager::checkSockets() {
 
 }
 
+ServerManager* ServerManager::get() {
+	if (_instance == NULL) {
+		_instance = new ServerManager;
+	}
+	return _instance;
+}
