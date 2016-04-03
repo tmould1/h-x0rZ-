@@ -10,14 +10,7 @@ ServerManager::~ServerManager() {
 }
 
 void ServerManager::acquireClient(Client & inClient) {
-	//Client * lastClient;
-	//if (!clientList) {
-	//	clientList = &inClient;
-	//}
-	//else {
-	//	lastClient = getLastClient();
-	//	lastClient->setNextClient(&inClient);
-	//}
+	if (true) {}
 }
 
 //Client* ServerManager::getLastClient() {
