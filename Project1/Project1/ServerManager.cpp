@@ -2,7 +2,8 @@
 #include <cstring>
 
 ServerManager* ServerManager::_instance = NULL;
-serverStatus = true;
+
+
 
 ServerManager::~ServerManager() {
 	//Client * tmp = clientList;
@@ -27,6 +28,10 @@ void ServerManager::acquireClient(Client & inClient) {
 
 bool ServerManager::isRunning() {
 	return serverStatus;
+}
+
+void ServerManager::setRunning(){
+	serverStatus = true;
 }
 
 void ServerManager::abort() {

@@ -7,10 +7,11 @@
 #include <sys/time.h>
 #endif
 
-#include "Client.h"
 #include "PracticalSocket.h"
+#include "Client.h"
 
 class Client;
+class ClientManager;
 
 class ServerManager {
 private :
@@ -38,6 +39,7 @@ public:
 	void acquireClient(Client & inClient);
 	//Client* getLastClient();
 	bool isRunning();
+        void setRunning();
 	void abort();
 	void checkSockets();
 	string getMsgFromSocket(TCPSocket & inSock);

@@ -17,6 +17,8 @@ int main(int argc, char * argv[]) {
 	servBoss->acquireClient(testClient);
 	servBoss->acquireClient(testClient2);
 
+        servBoss->setRunning();
+
         cout << " is Running is " << (servBoss->isRunning()? "True" : "False") << endl;
 
 	GameLoop( *servBoss );
@@ -28,7 +30,7 @@ void GameLoop( ServerManager & boss) {
 
 	while (boss.isRunning()) {
 		boss.checkSockets();
-		cout << " Looped " << endl;
+
 	}
 
 }

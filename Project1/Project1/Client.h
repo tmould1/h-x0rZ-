@@ -1,8 +1,8 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#pragma once
 
 #include <vector>
 #include "PracticalSocket.h"
+#include "ServerManager.h"
 
 class ServerManager;
 
@@ -45,4 +45,3 @@ public:
 };
 
 
-#endif
