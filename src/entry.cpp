@@ -1,3 +1,4 @@
+
  // Server Entry Point
    // LSU Letter
    // CSC3380 Class Project
@@ -106,7 +107,7 @@
        // Game Loop
        while(serverStatus) {
          getClient( *serverSock );
-         HandleRequest();
+//         HandleRequest();
          cout << "Looping" << endl;
 
        }//End For
@@ -198,10 +199,10 @@
        logFile << echoBuff;
        tempMessage += echoBuff;
        sock->send(echoBuff, recvMsgSize);
-       cout << "Working on Processing" << endl;
+//       cout << "Working on Processing" << endl;
      }
      logFile << endl;
-     cout << "Message Receive Complete." << endl;
+//     cout << "Message Receive Complete." << endl;
      tempMessage.resize(msgSize-1);  // This should chop off the newline
      clientMessageBuffer[numMessages++] = tempMessage;
      // Destructor closes Socket

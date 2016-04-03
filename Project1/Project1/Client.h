@@ -8,9 +8,8 @@ private :
 	TCPSocket * mySock;
 	//Client * nextClient;
 
-protected:
-	Client operator=(const Client obj);
 public:
+	Client operator=(const Client obj);
 	Client();
 	//~Client();
 	bool assignSocket(TCPServerSocket & server);

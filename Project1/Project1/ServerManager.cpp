@@ -10,7 +10,14 @@ ServerManager::~ServerManager() {
 }
 
 void ServerManager::acquireClient(Client & inClient) {
-	if (true) {}
+	//Client * lastClient;
+	//if (!clientList) {
+	//	clientList = &inClient;
+	//}
+	//else {
+	//	lastClient = getLastClient();
+	//	lastClient->setNextClient(&inClient);
+	//}
 }
 
 //Client* ServerManager::getLastClient() {
@@ -63,10 +70,10 @@ void ServerManager::checkSockets() {
 
 	// If Server Socket has something, it's a new connection
 	if (FD_ISSET(serverSocket, &descSet)) {
-		dummyClient = new Client();
-		dummyClient->assignSocket(this->servSock);
-		temp = getLastClient();
-		temp->setNextClient(dummyClient);
+//		dummyClient = new Client();
+//		dummyClient->assignSocket(this->servSock);
+//		temp = getLastClient();
+//		temp->setNextClient(dummyClient);
 	}
 
 	// Otherwise it is I/O
