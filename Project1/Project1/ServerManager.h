@@ -28,7 +28,7 @@ private :
 public:
 	static ServerManager* get() {
 		if ( _instance == NULL ) {
-			_instance = new ServerManager();
+			_instance = new ServerManager;
 		}
 		return _instance;
 	}
