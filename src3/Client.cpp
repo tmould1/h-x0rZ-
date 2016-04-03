@@ -11,21 +11,22 @@ bool Client::assignSocket(TCPServerSocket & server) {
 
 Client Client::operator=(const Client obj) {
 	mySock = obj.mySock;
-	nextClient = obj.nextClient;
+	//nextClient = obj.nextClient;
 }
 
-Client* Client::getNextClient() {
-	return nextClient;
-}
+//Client* Client::getNextClient() {
+//	return nextClient;
+//}
 
-void Client::setNextClient( Client * next) {
-	nextClient = next;
-}
+//void Client::setNextClient( Client * next) {
+//	nextClient = next;
+//}
 
 int Client::getSocket() {
-	return (mySock? mySock->getSockDesc() : 0);
+	return (mySock ? mySock->getSockDesc() : 0);
 }
+
 Client::Client() {
 	mySock = NULL;
-	nextClient = NULL;
+	//nextClient = NULL;
 }

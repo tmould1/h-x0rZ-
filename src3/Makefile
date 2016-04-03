@@ -10,11 +10,11 @@ clean :
 kill :
 	- rm -f $(OBJ) server
 
+ServerManager.o: ServerManager.cpp
+	$(CC) $(OPTIONS) -c ServerManager.cpp
+
 PracticalSocket.o: PracticalSocket.cpp
 	$(CC) $(OPTIONS) -c PracticalSocket.cpp
-
-ServerManager.o: ServerManager.cpp PracticalSocket.h PracticalSocket.cpp
-	$(CC) $(OPTIONS) -c ServerManager.cpp
 
 Client.o: Client.cpp
 	$(CC) $(OPTIONS) -c Client.cpp

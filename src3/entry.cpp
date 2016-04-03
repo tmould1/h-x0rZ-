@@ -1,11 +1,8 @@
-
    // Entry Point for Server/Client
    // CSC 3380
    //   H@x0rZ!
 
-#include <iostream>
 #include "ServerManager.h"
-
 
 void GameLoop( ServerManager & boss );
 
@@ -18,17 +15,14 @@ int main(int argc, char * argv[]) {
 	servBoss.acquireClient(testClient2);
 
 	GameLoop( servBoss );
-
+	
 	return 0;
 }
 
 void GameLoop( ServerManager & boss) {
 
-	while (1) {
-      //while( boss.isRunning() ) {
+	while (boss.isRunning()) {
 		boss.checkSockets();
-		std::cout << "Tick!" << std::endl;
-
 	}
-
+	
 }

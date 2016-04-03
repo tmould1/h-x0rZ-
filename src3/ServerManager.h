@@ -15,21 +15,20 @@ private :
 	int defaultPort = 9999;
 
 	const int maxClients = 100;
-	Client * clientList;
-	Client * dummyClient;
 
 	bool serverStatus = true;
+
 
 #ifdef __linux__
 	fd_set descSet;
 #endif
 
 public:
-	ServerManager() : servSock(defaultPort), serverStatus(false), clientList(NULL) {};
+	ServerManager() : servSock(defaultPort), serverStatus(false) {};
 	ServerManager(int port) : servSock(port) {};
 	~ServerManager();
 	void acquireClient(Client & inClient);
-	Client* getLastClient();
+	//Client* getLastClient();
 	bool isRunning();
 	void abort();
 	void checkSockets();
