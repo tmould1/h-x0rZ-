@@ -59,9 +59,16 @@ ClientManager* ClientManager::get() {
 
 bool ClientManager::findClient(Client & tClient) {
 	bool status = false;
-	vector<Client>::iterator iClient;
-	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
-		if ( (*iClient).getSocket() == tClient.getSocket() ) {
+	//vector<Client>::iterator iClient;
+	//for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
+	//	if ( (*iClient).getSocket() == tClient.getSocket() ) {
+	//		it = iClient;
+	//		status = true;
+	//	}
+	//}
+	//foreach (Client iClient : clientVec) {
+	for ( auto iClient : clientVec ){
+	  if (iClient.getSocket() == tClient.getSocket()) {
 			it = iClient;
 			status = true;
 		}
