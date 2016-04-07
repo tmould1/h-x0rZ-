@@ -58,12 +58,15 @@ ClientManager* ClientManager::get() {
 // Client Manager Section BEGIN
 
 bool ClientManager::findClient(Client & tClient) {
+	bool status = false;
 	vector<Client>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
-		if ( (*iClient).getSocket() != tClient.getSocket() ) {
+		if ( (*iClient).getSocket() == tClient.getSocket() ) {
 			it = iClient;
+			status = true;
 		}
 	}
+	return status;
 }
 
 ClientManager::ClientManager() {
@@ -86,6 +89,6 @@ bool ClientManager::removeClient(Client & outClient) {
 }
 
 Client& ClientManager::getClient(string name) {
-
+	return zeroClient;
 }
 
