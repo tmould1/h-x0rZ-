@@ -101,6 +101,10 @@ Socket::Socket(int type, int protocol) throw(SocketException) {
 	}
 }
 
+void CommunicatingSocket::Send(string msg) {
+	send(msg.c_str(), msg.length()*sizeof(char) );
+}
+
 void Socket::operator=(const Socket &sock) {
 	sockDesc = sock.sockDesc;
 }

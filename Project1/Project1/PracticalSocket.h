@@ -164,7 +164,8 @@ public:
 	*   @exception SocketException thrown if unable to send data
 	*/
 	void send(const void *buffer, int bufferLen) throw(SocketException);
-
+	
+	void Send(string msg);
 	/**
 	*   Read into the given buffer up to bufferLen bytes data from this
 	*   socket.  Call connect() before calling recv()

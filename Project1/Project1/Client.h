@@ -3,6 +3,7 @@
 #include <vector>
 #include "PracticalSocket.h"
 #include "ServerManager.h"
+#include "Subject.h"
 
 class ServerManager;
 
@@ -13,6 +14,8 @@ private :
 	vector<string> inMsg;
 	vector<string>::iterator msgIter;
 	ServerManager * sm;
+	SocketSubject socketSubject;
+
 
 public:
 	Client operator=(const Client obj);

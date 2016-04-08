@@ -19,6 +19,8 @@ void Subject::notify() {
 		(*o)->update();
 	}
 
+	//for ( auto o : Obser)
+
 }
 
 void Subject::attach(Observer & observer) {
