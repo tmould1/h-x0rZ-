@@ -9,6 +9,7 @@
 
 #include "PracticalSocket.h"
 #include "Client.h"
+#include "Account.h"
 
 class Client;
 class ClientManager;
@@ -45,6 +46,7 @@ public:
 	string getMsgFromSocket(TCPSocket & inSock);
 	//void checkNewConnection();
 	void registerClientManager();
+	bool AddAccount(Account newAccount);
 
 };
 

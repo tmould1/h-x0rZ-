@@ -1,5 +1,7 @@
 #include "ServerManager.h"
 #include <cstring>
+#include <fstream>
+#include <iostream>
 
 ServerManager* ServerManager::_instance = NULL;
 
@@ -109,4 +111,28 @@ string ServerManager::getMsgFromSocket(TCPSocket & inSock) {
 
 void ServerManager::registerClientManager() {
 	cm = cm->get();
+}
+
+bool ServerManager::AddAccount(Account newAccount) {
+	bool status = false;
+	ofstream newPlayerFile;
+
+	if (! exists("/accounts/" + newAccount.getLogin())) {
+		newPlayerFile.open("/accounts/" + newAccount.getLogin());
+		if (newPlayerFile.is_open()) {
+			newPlayerFile << "Name: " << newAccount.getLogin() << endl;
+			newPlayerFile << "Pass: " << newAccount.getPass() << endl;
+			newPlayerFile << "LastIP: " << newAccount.getIP() << endl;
+			status = true;
+		}
+	}
+	else {
+		// Tell the socket that accountName already exists
+	}
+	return status;
+}
+
+inline bool exists(const std::string& name) {
+	struct stat buffer;
+	return (stat(name.c_str(), &buffer) == 0);
 }
