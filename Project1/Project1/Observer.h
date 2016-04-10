@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "PracticalSocket.h"
+
+class SocketSubject;
 class Observer
 {
 public:
@@ -16,10 +18,10 @@ public:
 
 class SocketObserver : public Observer {
 private:
-	TCPSocket * socketState;
+	int socketState;
 public:
 	SocketSubject * socketSubject;
 	void update() {
-		socketState = socketSubject->getState();
+		socketState = (int)socketSubject->getState();
 	}
 };
