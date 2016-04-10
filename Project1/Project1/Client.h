@@ -4,6 +4,7 @@
 #include "PracticalSocket.h"
 #include "ServerManager.h"
 #include "Subject.h"
+#include "Observer.h"
 
 class ServerManager;
 
