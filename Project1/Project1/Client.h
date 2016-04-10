@@ -15,7 +15,7 @@ private :
 	vector<string> inMsg;
 	vector<string>::iterator msgIter;
 	ServerManager * sm;
-	SocketSubject socketSubject;
+//	SocketSubject socketSubject;
 
 
 public:

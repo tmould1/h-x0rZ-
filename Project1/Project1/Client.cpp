@@ -30,7 +30,7 @@ int Client::getSocket() {
 
 Client::Client() {
 	mySock = NULL;
-	socketSubject.setState(mySock);
+//	socketSubject.setState(mySock);
 	//nextClient = NULL;
 }
 
