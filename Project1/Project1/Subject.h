@@ -20,15 +20,15 @@ public:
 //  SocketSubject thisSocketSubject = new SocketSubject();
 //  thisSocketSubject.setState( &actualTCPSocket );
 
-class SocketSubject : public Subject {
-private :
-	TCPSocket* socketState;
-public :
-	TCPSocket* getState() {
-		return (socketState);
-	}
-	void setState(TCPSocket* toState) {
-		socketState = toState;
-	}
-};
+//class SocketSubject : public Subject {
+//private :
+//	TCPSocket* socketState;
+//public :
+//	TCPSocket* getState() {
+//		return (socketState);
+//	}
+//	void setState(TCPSocket* toState) {
+//		socketState = toState;
+//	}
+//};
 

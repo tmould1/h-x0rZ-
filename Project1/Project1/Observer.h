@@ -17,14 +17,14 @@ public:
 //   mySocketObserver.socketSubject = &thisSocketSubject;
 //   thisSocketSubject.attach( mySocketObserver );
 
-class SocketObserver : public Observer {
-
-private:
-	TCPSocket * socketState;
-public:
-	SocketSubject * socketSubject;
-	void update() {
-		socketState = socketSubject->getState();
-	}
-
-};
+//class SocketObserver : public Observer {
+//
+//private:
+//	TCPSocket * socketState;
+//public:
+//	SocketSubject * socketSubject;
+//	void update() {
+//		socketState = socketSubject->getState();
+//	}
+//
+//};
