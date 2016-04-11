@@ -46,7 +46,7 @@ public:
 	string getMsgFromSocket(TCPSocket & inSock);
 	//void checkNewConnection();
 	void registerClientManager();
-	bool AddAccount(Account newAccount);
+	bool AddAccount(Account & newAccount);
 
 };
 

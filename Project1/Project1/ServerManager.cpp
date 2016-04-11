@@ -1,11 +1,15 @@
+
 #include "ServerManager.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <sys/stat.h>
 
 ServerManager* ServerManager::_instance = NULL;
 
 const char * accountDir = "../accounts/";
+
+bool exists(const std::string& );
 
 
 ServerManager::~ServerManager() {
@@ -114,22 +118,24 @@ void ServerManager::registerClientManager() {
 	cm = cm->get();
 }
 
-bool ServerManager::AddAccount(Account newAccount) {
+bool ServerManager::AddAccount(Account & newAccount) {
 	bool status = false;
 	ofstream newPlayerFile;
-
-	if (! exists(accountDir + newAccount.getLogin())) {
+	if (!exists(accountDir + newAccount.getLogin())) {
 		newPlayerFile.open(accountDir + newAccount.getLogin());
+
 		if (newPlayerFile.is_open()) {
+			cout << "Writing to new File" << endl;
 			newPlayerFile << "Name: " << newAccount.getLogin() << endl;
 			newPlayerFile << "Pass: " << newAccount.getPass() << endl;
 			newPlayerFile << "LastIP: " << newAccount.getIP() << endl;
 			status = true;
 		}
 	}
-	else {
+//	}
+//	else {
 		// Tell the socket that accountName already exists
-	}
+//	}
 	return status;
 }
 
