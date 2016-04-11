@@ -33,3 +33,11 @@ std::string Account::getEmail() {
 bool Account::isAdmin() {
 	return admin;
 }
+
+void Account::Report(std::ostream & oStrm) {
+	oStrm << "Name : " << getLogin() << std::endl;
+	oStrm << "Pass : " << getPass() << std::endl;
+	oStrm << "Last IP: " << getIP() << std::endl;
+	oStrm << "Email : " << getEmail() << std::endl;
+	oStrm << "admin ? " << isAdmin() << std::endl;
+}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 class Account
 {
 public:
@@ -11,6 +12,7 @@ public:
 	std::string getIP();
 	std::string getEmail();
 	bool isAdmin();
+	void Report(std::ostream &);
 private:
 	std::string login;
 	std::string pass;

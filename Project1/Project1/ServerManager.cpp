@@ -129,9 +129,10 @@ bool ServerManager::AddAccount(Account & newAccount) {
 
 		if (newPlayerFile.is_open()) {
 			cout << "Writing to new File" << endl;
-			newPlayerFile << "Name: " << newAccount.getLogin() << endl;
-			newPlayerFile << "Pass: " << newAccount.getPass() << endl;
-			newPlayerFile << "LastIP: " << newAccount.getIP() << endl;
+			newAccount.Report(newPlayerFile);
+			//newPlayerFile << "Name: " << newAccount.getLogin() << endl;
+			//newPlayerFile << "Pass: " << newAccount.getPass() << endl;
+			//newPlayerFile << "LastIP: " << newAccount.getIP() << endl;
 			status = true;
 		}
 	}
