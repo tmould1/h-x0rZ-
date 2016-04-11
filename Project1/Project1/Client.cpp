@@ -28,25 +28,45 @@ int Client::getSocket() {
 	return (mySock ? mySock->getSockDesc() : -1);
 }
 
-Client::Client() {
+Client::Client(){
+
 	mySock = NULL;
 //	socketSubject.setState(mySock);
 	//nextClient = NULL;
 }
-
-void Client::putMsg(string msg) {
-	inMsg.push_back(msg);
+Client::~Client() {
+	delete &account;
 }
 
-string Client::getMsg() {
-
+void Client::putMsg(vector<string> & msgVector, string msg) {
+	// Mutex Lock
+	msgVector.push_back(msg);
+	// Mutex Unlock
 }
 
-void Client::recMsg(TCPSocket & inSock) {
+string Client::getMsg( vector<string> & msgVector) {
+	// Mutex Lock
+	string temp = msgVector.front();
+	msgVector.erase(inMsg.begin());
+	//Mutex Unlock
+	return temp;
+}
+
+void Client::recMsg(vector<string> & msgBuffer) {
 	sm = sm->get();
-	string inBuf;
-	inBuf = sm->getMsgFromSocket(inSock);
+	putMsg(msgBuffer, sm->getMsgFromSocket(*mySock));
 }
+
+Account& Client::getAccount() {
+	return *account;
+}
+
+void Client::setAccount(Account& inAcct) {
+	account = &inAcct;
+}
+
+
+
 
 ClientManager* ClientManager::get() {
 	if (!_instance) {
@@ -78,6 +98,7 @@ bool ClientManager::findClient(Client & tClient) {
 }
 
 ClientManager::ClientManager() {
+
 	it = clientVec.begin(); 
 	it = clientVec.insert(it, zeroClient);
 }

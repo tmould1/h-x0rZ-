@@ -11,10 +11,10 @@ int main(int argc, char * argv[]) {
 	ServerManager * servBoss; // Default Constructor sets port to 9999
 	Client testClient;
 	Client testClient2;
-	Account toddAccount("Todd", "MyPassword", "127.0.0.1", true);
-	Account willAccount("Will", "HisPassword", "127.0.0.1", true);
-	Account jonAccount("Jon", "TurtleFarts", "127.0.0.1", true);
-	Account hardikaAccount("Hardika", "Kolaches", "127.0.0.1", true);
+	Account toddAccount("Todd", "MyPassword", "127.0.0.1", "toddmoulder88@gmail.com", true);
+	Account willAccount("Will", "HisPassword", "127.0.0.1", "will@awesome.com", true);
+	Account jonAccount("Jon", "TurtleFarts", "127.0.0.1", "jon@strange.net", true);
+	Account hardikaAccount("Hardika", "Kolaches", "127.0.0.1", "hardika@amazing.org", true);
 
 	servBoss = servBoss->get();
 

@@ -34,7 +34,7 @@ private :
 
 public:
 	static ServerManager* get();
-	ServerManager() : servSock(defaultPort), serverStatus(false) {};
+	ServerManager() : servSock(defaultPort), serverStatus(false) { cm = ClientManager.get()};
 	ServerManager(int port) : servSock(port) {};
 	~ServerManager();
 	void acquireClient(Client & inClient);
@@ -47,6 +47,7 @@ public:
 	//void checkNewConnection();
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
+
 
 };
 

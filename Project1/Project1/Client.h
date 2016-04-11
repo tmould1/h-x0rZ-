@@ -12,21 +12,25 @@ class Client {
 private :
 	TCPSocket * mySock;
 	//Client * nextClient;
-	vector<string> inMsg;
+	vector<string> inMsg; // From Client to Server ( Messages to read and inform Server )
 	vector<string>::iterator msgIter;
+	vector<string> outMsg; // From Server to Client ( Messages to send to client from server )
 	ServerManager * sm;
+	Account * account;
 //	SocketSubject socketSubject;
 
 
 public:
 	Client operator=(const Client obj);
 	Client();
-	//~Client();
+	~Client();
 	bool assignSocket(TCPServerSocket & server);
 	int getSocket();
-	void putMsg(string msg);
-	string getMsg();
-	void recMsg(TCPSocket & inSock);
+	void putMsg(vector<string>&, string msg);
+	string getMsg(vector<string>&);
+	void recMsg(vector<string>&);
+	Account & getAccount();
+	void setAccount(Account &);
 //	Client* getNextClient();
 	//void setNextClient( Client * next );
 };

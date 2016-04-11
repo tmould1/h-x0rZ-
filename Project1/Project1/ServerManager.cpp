@@ -11,7 +11,6 @@ const char * accountDir = "../accounts/";
 
 bool exists(const std::string& );
 
-
 ServerManager::~ServerManager() {
 	//Client * tmp = clientList;
 	//while (tmp) {
@@ -22,7 +21,7 @@ ServerManager::~ServerManager() {
 }
 
 void ServerManager::acquireClient(Client & inClient) {
-
+	cm->addClient(inClient);
 }
 
 //Client* ServerManager::getLastClient() {
@@ -132,10 +131,9 @@ bool ServerManager::AddAccount(Account & newAccount) {
 			status = true;
 		}
 	}
-//	}
-//	else {
-		// Tell the socket that accountName already exists
-//	}
+	else {
+		cout << newAccount.getLogin() << " account already exists.  Try another Login Name." << endl;
+	}
 	return status;
 }
 
