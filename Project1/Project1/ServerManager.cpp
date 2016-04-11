@@ -30,6 +30,7 @@ ServerManager::~ServerManager() {
 	//	delete tmp;
 	//	tmp = dummyClient;
 	//}
+	delete servSock;
 }
 
 void ServerManager::acquireClient(Client & inClient) {
