@@ -98,7 +98,6 @@ bool ClientManager::findClient(Client & tClient) {
 }
 
 ClientManager::ClientManager() {
-
 	it = clientVec.begin(); 
 	it = clientVec.insert(it, zeroClient);
 }

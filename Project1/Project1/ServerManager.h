@@ -34,7 +34,7 @@ private :
 
 public:
 	static ServerManager* get();
-	ServerManager() : servSock(defaultPort), serverStatus(false) { cm = ClientManager.get()};
+	ServerManager() : servSock(defaultPort), serverStatus(false) { cm = cm->get(); }
 	ServerManager(int port) : servSock(port) {};
 	~ServerManager();
 	void acquireClient(Client & inClient);
