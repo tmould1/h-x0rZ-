@@ -69,7 +69,7 @@ void ServerManager::checkSockets() {
 	// Get all the Clients
 //	while (temp) {
 //#ifdef __linux__
-//		sd = temp->getSocket();
+//		sd = temp->getSocketID();
 //		FD_SET(sd, &descSet);
 //		if (sd > maxDesc) {
 //			maxDesc = sd;

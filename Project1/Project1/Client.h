@@ -27,12 +27,13 @@ public:
 	Client();
 	~Client();
 	bool assignSocket(TCPServerSocket & server);
-	int getSocket();
+	int getSocketID();
 	void putMsg(vector<string>&, string msg);
 	string getMsg(vector<string>&);
 	void recMsg(vector<string>&);
 	Account & getAccount();
 	void setAccount(Account &);
+	TCPSocket & getSocket();
 //	Client* getNextClient();
 	//void setNextClient( Client * next );
 };

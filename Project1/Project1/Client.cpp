@@ -24,8 +24,12 @@ Client Client::operator=(const Client obj) {
 //	nextClient = next;
 //}
 
-int Client::getSocket() {
+int Client::getSocketID() {
 	return (mySock ? mySock->getSockDesc() : -1);
+}
+
+TCPSocket& Client::getSocket() {
+	return *mySock;
 }
 
 Client::Client(){
