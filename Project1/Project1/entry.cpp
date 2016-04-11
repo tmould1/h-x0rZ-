@@ -19,6 +19,9 @@ int main(int argc, char * argv[]) {
 	servBoss = servBoss->get();
 
         servBoss->AddAccount( toddAccount );
+        servBoss->AddAccount( willAccount );
+        servBoss->AddAccount( jonAccount );
+        servBoss->AddAccount( hardikaAccount );
 
 	servBoss->acquireClient(testClient);
 	servBoss->acquireClient(testClient2);
