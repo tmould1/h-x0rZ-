@@ -48,6 +48,7 @@ protected:
 public:
 	static ClientManager* get();
 	ClientManager();
+	~ClientManager();
 	bool addClient(Client & inClient);
 	bool removeClient( Client & outClient );
 	Client & getClient( string name );

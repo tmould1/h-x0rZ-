@@ -35,7 +35,7 @@ Client::Client(){
 	//nextClient = NULL;
 }
 Client::~Client() {
-	delete &account;
+
 }
 
 void Client::putMsg(vector<string> & msgVector, string msg) {
@@ -100,6 +100,10 @@ bool ClientManager::findClient(Client & tClient) {
 ClientManager::ClientManager() {
 	it = clientVec.begin(); 
 	it = clientVec.insert(it, zeroClient);
+}
+
+ClientManager::~ClientManager() {
+	delete _instance;
 }
 
 bool ClientManager::addClient(Client & inClient) {
