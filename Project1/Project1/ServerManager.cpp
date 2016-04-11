@@ -94,7 +94,7 @@ void ServerManager::checkSockets() {
 	// If Server Socket has something, it's a new connection
 	if (FD_ISSET(serverSocket, &descSet)) {
 		dummyClient = new Client();
-		if (!dummyClient->assignSocket(servSock)) {
+		if (!dummyClient->assignSocket(*servSock)) {
 			cout << "Could not assign new Client Socket" << endl;
 		}
 		acquireClient(*dummyClient);

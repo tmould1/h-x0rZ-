@@ -35,7 +35,7 @@ private :
 public:
 	static ServerManager* get();
 	ServerManager();
-	ServerManager(int port) {};
+	ServerManager(int port);
 	~ServerManager();
 	void acquireClient(Client & inClient);
 	//Client* getLastClient();
