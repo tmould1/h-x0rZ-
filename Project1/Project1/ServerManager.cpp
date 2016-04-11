@@ -12,8 +12,8 @@ const char * accountDir = "../accounts/";
 
 bool exists(const std::string& );
 
-ServerManager::ServerManager() : servSock(defaultPort), serverStatus(false) { 
-   cm = cm->get(); 
+ServerManager::ServerManager(): servSock(defaultPort), serverStatus(false) { 
+   cm = cm->get();
 }
 
 ServerManager::~ServerManager() {
@@ -57,7 +57,7 @@ void ServerManager::checkSockets() {
 #ifdef __linux__
 	struct timeval tv;
 	tv.tv_sec = 0;
-	tv.tv_usec = 50;
+	tv.tv_usec = 100000;
 #endif
 
 #ifdef __linux__

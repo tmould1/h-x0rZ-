@@ -48,6 +48,7 @@ void GameLoop( ServerManager & boss) {
 		//boss.gameUpdate();
 		// Load the Client Mailboxes and Send any messages
 		//boss.handleOutput();
+//                cout << "Every .10secs?" << endl;
 	}
 
 }

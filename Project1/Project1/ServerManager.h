@@ -19,7 +19,7 @@ private :
 	static ServerManager* _instance;
 
 	TCPServerSocket servSock;
-	int defaultPort = 9999;
+	const int defaultPort = 9999;
 
 	const int maxClients = 100;
 
