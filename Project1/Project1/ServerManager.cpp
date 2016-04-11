@@ -51,6 +51,8 @@ void ServerManager::abort() {
 void ServerManager::checkSockets() {
 	//Client * temp = clientList;
 	int maxDesc, sd, serverSocket = servSock.getSockDesc();
+	Client dummyClient;
+
 #ifdef __linux__
 	struct timeval tv;
 	tv.tv_sec = 0;
@@ -82,8 +84,13 @@ void ServerManager::checkSockets() {
 
 	// If Server Socket has something, it's a new connection
 	if (FD_ISSET(serverSocket, &descSet)) {
-//		dummyClient = new Client();
-//		dummyClient->assignSocket(this->servSock);
+		dummyClient = new Client();
+		if (!dummyClient->assignSocket(this->servSock)) {
+			cout << "Could not assign new Client Socket" << endl;
+		}
+		acquireClient(dummyClient);
+		dummyClient.mySock->Send("Please choose one:\n(1)Login\n(2)New Account\n>");
+		//dummyClient.mySock->recv()
 //		temp = getLastClient();
 //		temp->setNextClient(dummyClient);
 	}
