@@ -51,7 +51,7 @@ void ServerManager::abort() {
 void ServerManager::checkSockets() {
 	//Client * temp = clientList;
 	int maxDesc, sd, serverSocket = servSock.getSockDesc();
-	Client dummyClient;
+	Client * dummyClient;
 
 #ifdef __linux__
 	struct timeval tv;
@@ -89,7 +89,7 @@ void ServerManager::checkSockets() {
 			cout << "Could not assign new Client Socket" << endl;
 		}
 		acquireClient(dummyClient);
-		dummyClient.mySock->Send("Please choose one:\n(1)Login\n(2)New Account\n>");
+		dummyClient->getSocket()->Send("Please choose one:\n(1)Login\n(2)New Account\n>");
 		//dummyClient.mySock->recv()
 //		temp = getLastClient();
 //		temp->setNextClient(dummyClient);
