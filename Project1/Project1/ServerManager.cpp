@@ -5,6 +5,7 @@
 
 ServerManager* ServerManager::_instance = NULL;
 
+const char * accountDir = "../accounts/";
 
 
 ServerManager::~ServerManager() {
@@ -117,8 +118,8 @@ bool ServerManager::AddAccount(Account newAccount) {
 	bool status = false;
 	ofstream newPlayerFile;
 
-	if (! exists("/accounts/" + newAccount.getLogin())) {
-		newPlayerFile.open("/accounts/" + newAccount.getLogin());
+	if (! exists(accountDir + newAccount.getLogin())) {
+		newPlayerFile.open(accountDir + newAccount.getLogin());
 		if (newPlayerFile.is_open()) {
 			newPlayerFile << "Name: " << newAccount.getLogin() << endl;
 			newPlayerFile << "Pass: " << newAccount.getPass() << endl;
