@@ -18,7 +18,7 @@ class ServerManager {
 private :
 	static ServerManager* _instance;
 
-	TCPServerSocket servSock;
+	TCPServerSocket * servSock;
 	const int defaultPort = 9999;
 
 	const int maxClients = 100;
@@ -35,7 +35,7 @@ private :
 public:
 	static ServerManager* get();
 	ServerManager();
-	ServerManager(int port) : servSock(port) {};
+	ServerManager(int port) {};
 	~ServerManager();
 	void acquireClient(Client & inClient);
 	//Client* getLastClient();

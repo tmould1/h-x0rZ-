@@ -12,8 +12,15 @@ const char * accountDir = "../accounts/";
 
 bool exists(const std::string& );
 
-ServerManager::ServerManager(): servSock(defaultPort), serverStatus(false) { 
-   cm = cm->get();
+ServerManager::ServerManager() {
+	servSock = new TCPServerSocket(defaultPort);
+	serverStatus = true;
+	cm = cm->get();
+}
+ServerManager::ServerManager(int port) {
+	servSock = new TCPServerSocket(port);
+	serverStatus = true;
+	cm = cm->get();
 }
 
 ServerManager::~ServerManager() {
@@ -51,7 +58,7 @@ void ServerManager::abort() {
 
 void ServerManager::checkSockets() {
 	//Client * temp = clientList;
-	int maxDesc, sd, serverSocket = servSock.getSockDesc();
+	int maxDesc, sd, serverSocket = servSock->getSockDesc();
 	Client * dummyClient;
 
 #ifdef __linux__
