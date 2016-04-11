@@ -2,11 +2,12 @@
 
 
 
-Account::Account(std::string inLogin, std::string inPass, std::string inIP)
+Account::Account(std::string inLogin, std::string inPass, std::string inIP, bool inAdmin)
 {
 	login = inLogin;
 	pass = inPass;
 	lastIP = inIP;
+	admin = inAdmin;
 }
 
 
@@ -22,4 +23,8 @@ std::string Account::getPass() {
 }
 std::string Account::getIP() {
 	return lastIP;
+}
+
+bool Account::isAdmin() {
+	return admin;
 }
