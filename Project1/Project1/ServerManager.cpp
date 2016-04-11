@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sys/stat.h>
 
+
 ServerManager* ServerManager::_instance = NULL;
 
 const char * accountDir = "../accounts/";
@@ -88,8 +89,8 @@ void ServerManager::checkSockets() {
 		if (!dummyClient->assignSocket(servSock)) {
 			cout << "Could not assign new Client Socket" << endl;
 		}
-		acquireClient(dummyClient);
-		dummyClient->getSocket()->Send("Please choose one:\n(1)Login\n(2)New Account\n>");
+		acquireClient(*dummyClient);
+		dummyClient->getSocket().Send("Please choose one:\n(1)Login\n(2)New Account\n>");
 		//dummyClient.mySock->recv()
 //		temp = getLastClient();
 //		temp->setNextClient(dummyClient);
