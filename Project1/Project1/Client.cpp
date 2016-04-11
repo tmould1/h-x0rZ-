@@ -86,7 +86,7 @@ bool ClientManager::findClient(Client & tClient) {
 	bool status = false;
 	vector<Client>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
-		if ( (*iClient).getSocket() == tClient.getSocket() ) {
+		if ( (*iClient).getSocketID() == tClient.getSocketID() ) {
 			it = iClient;
 			status = true;
 		}

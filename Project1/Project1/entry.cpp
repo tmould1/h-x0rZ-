@@ -8,7 +8,7 @@
 void GameLoop( ServerManager & boss );
 
 int main(int argc, char * argv[]) {
-	ServerManager * servBoss; // Default Constructor sets port to 9999
+	ServerManager * servBoss;
 	Client testClient;
 	Client testClient2;
 	Account toddAccount("Todd", "MyPassword", "127.0.0.1", "toddmoulder88@gmail.com", true);
