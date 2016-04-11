@@ -5,7 +5,9 @@
 #include "ServerManager.h"
 #include "Subject.h"
 #include "Observer.h"
+#include "Account.h"
 
+class Account;
 class ServerManager;
 
 class Client {

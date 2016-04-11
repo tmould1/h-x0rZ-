@@ -11,6 +11,10 @@ const char * accountDir = "../accounts/";
 
 bool exists(const std::string& );
 
+ServerManager::ServerManager() : servSock(defaultPort), serverStatus(false) { 
+   cm = cm->get(); 
+}
+
 ServerManager::~ServerManager() {
 	//Client * tmp = clientList;
 	//while (tmp) {

@@ -1,5 +1,4 @@
-#ifndef SERVERMANAGER_H
-#define SERVERMANAGER_H
+#pragma once
 
 #include <mutex>
 #include <thread>
@@ -13,6 +12,7 @@
 
 class Client;
 class ClientManager;
+class Account;
 
 class ServerManager {
 private :
@@ -34,7 +34,7 @@ private :
 
 public:
 	static ServerManager* get();
-	ServerManager() : servSock(defaultPort), serverStatus(false) { cm = cm->get(); }
+	ServerManager();
 	ServerManager(int port) : servSock(port) {};
 	~ServerManager();
 	void acquireClient(Client & inClient);
@@ -52,4 +52,3 @@ public:
 };
 
 
-#endif
