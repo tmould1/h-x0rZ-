@@ -114,6 +114,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="HaxorSocket.cpp" />
     <ClCompile Include="NewAccountCommand.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="PracticalSocket.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Account.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="HaxorSocket.h" />
     <ClInclude Include="NewAccountCommand.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PracticalSocket.h" />
