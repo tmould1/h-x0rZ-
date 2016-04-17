@@ -81,11 +81,15 @@ void ServerManager::checkSockets() {
 	// If Server Socket has something, it's a new connection
 	if (FD_ISSET(serverSocket, &descSet)) {
 		dummyClient = new Client();
-		if (!dummyClient->assignSocket(*servSock)) {
-			cout << "Could not assign new Client Socket" << endl;
-		}
-		
-		acquireClient(*dummyClient);
+		thread newConnThread;
+		newConnThread = thread(threadNewConnection, *dummyClient);
+
+		//dummyClient = new Client();
+		//if (!dummyClient->assignSocket(*servSock)) {
+		//	cout << "Could not assign new Client Socket" << endl;
+		//}
+		//
+		//acquireClient(*dummyClient);
 		//dummyClient.mySock->recv()
 //		temp = getLastClient();
 //		temp->setNextClient(dummyClient);
@@ -133,9 +137,6 @@ bool ServerManager::AddAccount(Account & newAccount) {
 		if (newPlayerFile.is_open()) {
 			cout << "Writing to new File" << endl;
 			newAccount.Report(newPlayerFile);
-			//newPlayerFile << "Name: " << newAccount.getLogin() << endl;
-			//newPlayerFile << "Pass: " << newAccount.getPass() << endl;
-			//newPlayerFile << "LastIP: " << newAccount.getIP() << endl;
 			status = true;
 		}
 	}
@@ -148,4 +149,24 @@ bool ServerManager::AddAccount(Account & newAccount) {
 inline bool exists(const std::string& name) {
 	struct stat buffer;
 	return (stat(name.c_str(), &buffer) == 0);
+}
+// Gets Called in a thread
+void ServerManager::threadNewConnection(Client & newClient) {
+	string initMsgBuff;
+	// Lock ServerManager Data
+
+	// Associate Socket with Client, then work on Client
+	if (newClient.assignSocket(*servSock)) {
+		cout << " Socket Assignment Success for " << newClient.getSocket().getForeignAddress << endl;
+	}
+
+	// Receive Login or NewAccount
+	//initMsgBuff = newClient.getSocket().Receive();
+	
+	// Build Command for either
+	// Execute the Command
+	// Send Result?  Or have the Command return the result
+	// Acquire the Client
+
+	// Unlock ServerManager Data
 }

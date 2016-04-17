@@ -47,6 +47,7 @@ public:
 	//void checkNewConnection();
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
+	void threadNewConnection(Client & newClient);
 
 
 };

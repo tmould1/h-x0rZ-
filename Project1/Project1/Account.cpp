@@ -35,9 +35,9 @@ bool Account::isAdmin() {
 }
 
 void Account::Report(std::ostream & oStrm) {
-	oStrm << "Name : " << getLogin() << std::endl;
-	oStrm << "Pass : " << getPass() << std::endl;
-	oStrm << "Last IP: " << getIP() << std::endl;
-	oStrm << "Email : " << getEmail() << std::endl;
-	oStrm << "admin ? " << isAdmin() << std::endl;
+	oStrm << getLogin() << std::endl;
+	oStrm << getPass() << std::endl;
+	oStrm << getIP() << std::endl;
+	oStrm << getEmail() << std::endl;
+	oStrm << isAdmin() << std::endl;
 }
