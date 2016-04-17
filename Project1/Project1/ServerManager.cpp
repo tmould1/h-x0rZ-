@@ -75,19 +75,6 @@ void ServerManager::checkSockets() {
 	FD_SET(maxDesc = serverSocket, &descSet);
 #endif
 
-	// Get all the Clients
-//	while (temp) {
-//#ifdef __linux__
-//		sd = temp->getSocketID();
-//		FD_SET(sd, &descSet);
-//		if (sd > maxDesc) {
-//			maxDesc = sd;
-//		}
-//#endif
-//		//temp = temp->getNextClient();
-//	}
-
-	// Wait for activity on sockets
 #ifdef __linux__
 	select(maxDesc + 1, &descSet, NULL, NULL, &tv);
 
@@ -97,8 +84,8 @@ void ServerManager::checkSockets() {
 		if (!dummyClient->assignSocket(*servSock)) {
 			cout << "Could not assign new Client Socket" << endl;
 		}
+		
 		acquireClient(*dummyClient);
-		dummyClient->getSocket().Send("Please choose one:\n(1)Login\n(2)New Account\n>");
 		//dummyClient.mySock->recv()
 //		temp = getLastClient();
 //		temp->setNextClient(dummyClient);

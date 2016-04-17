@@ -74,7 +74,7 @@ void Client::setAccount(Account& inAcct) {
 
 ClientManager* ClientManager::get() {
 	if (!_instance) {
-		_instance = new ClientManager;
+		_instance = new ClientManager();
 	}
 	return _instance;
 }
