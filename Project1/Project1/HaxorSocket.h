@@ -4,7 +4,7 @@
 
 class HaxorSocket
 {
-private:
+protected:
 	int socketID;
 public:
 	virtual void Socket() = 0;
