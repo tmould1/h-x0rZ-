@@ -6,13 +6,14 @@
 #include "Subject.h"
 #include "Observer.h"
 #include "Account.h"
+#include "HaxorSocket.h"
 
 class Account;
 class ServerManager;
 
 class Client {
 private :
-	TCPSocket * mySock;
+	HaxorSocket * mySock;
 	//Client * nextClient;
 	vector<string> inMsg; // From Client to Server ( Messages to read and inform Server )
 	vector<string>::iterator msgIter;
@@ -33,7 +34,7 @@ public:
 	void recMsg(vector<string>&);
 	Account & getAccount();
 	void setAccount(Account &);
-	TCPSocket & getSocket();
+	HaxorSocket & getSocket();
 //	Client* getNextClient();
 	//void setNextClient( Client * next );
 };

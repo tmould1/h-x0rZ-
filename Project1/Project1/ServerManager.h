@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <thread>
+#include <map>
 #ifdef __linux__
 #include <sys/time.h>
 #endif
@@ -9,6 +10,7 @@
 #include "PracticalSocket.h"
 #include "Client.h"
 #include "Account.h"
+#include "Command.h"
 
 class Client;
 class ClientManager;
@@ -27,6 +29,9 @@ private :
 
 	ClientManager * cm;
 
+	vector<Command *> cmdPrototypes;
+
+	std::map<std::string, Command *> cmdMap;
 
 #ifdef __linux__
 	fd_set descSet;
@@ -40,13 +45,15 @@ public:
 	void acquireClient(Client & inClient);
 	//Client* getLastClient();
 	bool isRunning();
-        void setRunning();
+    void setRunning();
 	void abort();
 	void checkSockets();
-	string getMsgFromSocket(TCPSocket & inSock);
+	string GetMsgFromSocket(HaxorSocket & inSock);
+	void SendMessageToSocket(HaxorSocket & inSock, string message);
 	//void checkNewConnection();
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
+	int checkAccount(std::string, std::string, std::string);
 	void threadNewConnection(Client & newClient);
 
 

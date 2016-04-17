@@ -16,6 +16,11 @@ ServerManager::ServerManager() {
 	servSock = new TCPServerSocket(defaultPort);
 	serverStatus = true;
 	cm = cm->get();
+	cmdPrototypes.push_back( new LoginCommand() );
+	cmdMap["Login"] = cmdPrototypes.at( cmdPrototypes.size() );
+	cmdPrototypes.push_back(new NewAccountCommand());
+	cmdMap["NewAccount"] = cmdPrototypes.at(cmdPrototypes.size());
+	cmdPrototypes.push_back(new LoginCheckCommand());
 }
 ServerManager::ServerManager(int port) {
 	servSock = new TCPServerSocket(port);
@@ -108,20 +113,11 @@ ServerManager* ServerManager::get() {
 	return _instance;
 }
 
-string ServerManager::getMsgFromSocket(TCPSocket & inSock) {
-	int msgLength;
-	const int maxBuf = 255;
-	char buf[maxBuf];
-	string fMsg;
-	size_t len;
-
-	while (inSock.recv(buf, maxBuf) > 0) {
-		len = strlen(buf);
-		msgLength += len;
-		fMsg.append(buf);
-		std::fill(buf, buf + len, 0);
-	}
-	return fMsg;
+string ServerManager::GetMsgFromSocket(HaxorSocket & inSock) {
+	return inSock.Receive();
+}
+void ServerManager::SendMessageToSocket(HaxorSocket & inSock, string message) {
+	inSock.Send(message);
 }
 
 void ServerManager::registerClientManager() {
@@ -153,20 +149,48 @@ inline bool exists(const std::string& name) {
 // Gets Called in a thread
 void ServerManager::threadNewConnection(Client & newClient) {
 	string initMsgBuff;
+	string cmdName;
+	Command* tempCmd;
+	bool success = false;
 	// Lock ServerManager Data
 
 	// Associate Socket with Client, then work on Client
 	if (newClient.assignSocket(*servSock)) {
-		cout << " Socket Assignment Success for " << newClient.getSocket().getForeignAddress << endl;
+		cout << " Socket Assignment Success for " << newClient.getAccount().getIP << endl;
 	}
-
 	// Receive Login or NewAccount
-	//initMsgBuff = newClient.getSocket().Receive();
+	initMsgBuff = newClient.getSocket().Receive();
 	
 	// Build Command for either
+	if (initMsgBuff.find("Login") != std::string::npos) {
+		tempCmd = cmdMap["Login"]->Clone();
+		// Pull up Argument List
+	}
+	else if (initMsgBuff.find("NewAccount") != std::string::npos) {
+		NewAccountCommand * tmp;
+		tempCmd = cmdMap["NewAccount"]->Clone();
+		// Need a way to cycle through strings pulling substrings into args after finding a space
+		//tmp = new NewAccountCommand();  
+	}
+
 	// Execute the Command
+	success = tempCmd->Execute();
+
 	// Send Result?  Or have the Command return the result
+	if (success) {
+
+	}
+
 	// Acquire the Client
 
 	// Unlock ServerManager Data
+}
+// checkAccount(),
+// In:  name, pass, IP
+// Out:  <int> status : 0 - Account DNE
+//                     -1 - Incorrect Password
+//						1 - Success!
+int ServerManager::checkAccount(std::string, std::string, std::string){
+	int status = 0;
+	if( )
 }
