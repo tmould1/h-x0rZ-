@@ -16,11 +16,13 @@ ServerManager::ServerManager() {
 	servSock = new TCPServerSocket(defaultPort);
 	serverStatus = true;
 	cm = cm->get();
+
 	cmdPrototypes.push_back( new LoginCommand() );
 	cmdMap["Login"] = cmdPrototypes.at( cmdPrototypes.size() );
 	cmdPrototypes.push_back(new NewAccountCommand());
 	cmdMap["NewAccount"] = cmdPrototypes.at(cmdPrototypes.size());
 	cmdPrototypes.push_back(new LoginCheckCommand());
+	cmdMap["LoginCheck"] = cmdPrototypes.at(cmdPrototypes.size());
 }
 ServerManager::ServerManager(int port) {
 	servSock = new TCPServerSocket(port);
@@ -152,6 +154,7 @@ void ServerManager::threadNewConnection(Client & newClient) {
 	string cmdName;
 	Command* tempCmd;
 	bool success = false;
+
 	// Lock ServerManager Data
 
 	// Associate Socket with Client, then work on Client
@@ -160,28 +163,30 @@ void ServerManager::threadNewConnection(Client & newClient) {
 	}
 	// Receive Login or NewAccount
 	initMsgBuff = newClient.getSocket().Receive();
+	newClient.getSocket();
 	
 	// Build Command for either
 	if (initMsgBuff.find("Login") != std::string::npos) {
 		tempCmd = cmdMap["Login"]->Clone();
-		// Pull up Argument List
 	}
 	else if (initMsgBuff.find("NewAccount") != std::string::npos) {
-		NewAccountCommand * tmp;
 		tempCmd = cmdMap["NewAccount"]->Clone();
-		// Need a way to cycle through strings pulling substrings into args after finding a space
-		//tmp = new NewAccountCommand();  
 	}
-
-	// Execute the Command
+	tempCmd->Initialize(initMsgBuff);
 	success = tempCmd->Execute();
-
 	// Send Result?  Or have the Command return the result
 	if (success) {
+		delete tempCmd;
+		tempCmd = cmdMap["LoginCheck"]->Clone();
+		tempCmd->GetClient(newClient);
+		tempCmd->Initialize(initMsgBuff);
+		tempCmd->Execute();
 
+		// Acquire the Client
+		acquireClient(newClient);
 	}
 
-	// Acquire the Client
+
 
 	// Unlock ServerManager Data
 }

@@ -1,17 +1,36 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <sstream>
 #include "ServerManager.h"
 
 class Command
 {
 protected:
 	vector<std::string> * argList;
+	string cmdArgs;
+	Client * clientActor;
 public:
-	Command(string CmdList)
+	Command()
 	{
 		argList = new vector<std::string>();
 		// Populate arglist from CmdList
+	}
+	virtual void GetClient(Client & actor) {
+		clientActor = &actor;
+	}
+	virtual void Initialize(string inArgs) {
+		cmdArgs = inArgs;
+		splitArgs();
+	}
+	void splitArgs( ) {
+		stringstream ss(cmdArgs);
+		string arg;
+		char * delimiter = " ";
+
+		while (getline(ss, arg, *delimiter)) {
+			argList->push_back(arg);
+		}
 	}
 
 	~Command();
@@ -21,27 +40,17 @@ public:
 
 class NewAccountCommand : public Command {
 public:
-	NewAccountCommand() {
-
-	}
-	NewAccountCommand(string n, string p, string i, string e, string a) {
-		argList->push_back(n);
-		argList->push_back(p);
-		argList->push_back(i);
-		argList->push_back(e);
-		argList->push_back(a);
-	}
 	bool Execute() {
 		ServerManager * sm = sm->get();
 		Account * tempAccount;
 		string name, pass, ip, email, admin;
 		bool bAdmin = false;
 		bool success = false;
-		name = argList->at(0);
-		pass = argList->at(1);
-		ip = argList->at(2);
-		email = argList->at(3);
-		admin = argList->at(4);
+		name = argList->at(1);
+		pass = argList->at(2);
+		ip = argList->at(3);
+		email = argList->at(4);
+		admin = argList->at(5);
 		if (admin == "true") {
 			bAdmin = true;
 		}
@@ -64,19 +73,11 @@ public:
 
 class LoginCommand : public Command {
 public:
-	LoginCommand() {
-
-	}
-	LoginCommand(string n, string p, string i) {
-		argList->push_back(n);
-		argList->push_back(p);
-		argList->push_back(i);
-	}
 	bool Execute() {
 		bool status = false;
 		ServerManager * sm = sm->get();
 
-		sm->checkAccount(argList->at(0), argList->at(1), argList->at(2));
+		sm->checkAccount(argList->at(1), argList->at(2), argList->at(3));
 	}
 	Command * Clone() {
 		return new LoginCommand();
@@ -85,11 +86,23 @@ public:
 };
 
 class LoginCheckCommand : public Command {
-	HaxorSocket* toConnect;
 	ServerManager * sm = sm->get();
+
 public:
+	void Initialize(string inArgs) {
+		cmdArgs = inArgs;
+		splitArgs();
+
+	}
 	bool Execute() {
-		sm->SendMessageToSocket()
+
+		if (cmdArgs.find("Login") != std::string::npos) {
+			sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck Login 1");
+		}
+		else if (cmdArgs.find("NewAccount") != std::string::npos) {
+			sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck NewAccount 1");
+		}
+
 	}
 	Command * Clone() {
 		return new LoginCheckCommand();
