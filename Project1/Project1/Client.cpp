@@ -77,16 +77,21 @@ bool ClientManager::findClient(Client & tClient) {
 		if ( (*iClient).getSocketID() == tClient.getSocketID() ) {
 			it = iClient;
 			status = true;
+			continue;
 		}
 	}
-	//foreach (Client iClient : clientVec) {
-	//for ( auto iClient : clientVec ){
-	//  if (iClient.getSocket() == tClient.getSocket()) {
-	//		it = clientVe);
-	//		status = true;
-	//	}
-	//}
 	return status;
+}
+
+Client* ClientManager::findClientById(int tID) {
+	vector<Client>::iterator iClient;
+	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
+		if ((*iClient).getSocketID() == tID) {
+			it = iClient;
+			continue;
+		}
+	}
+	return &(*it);
 }
 
 ClientManager::ClientManager() {

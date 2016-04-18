@@ -69,12 +69,13 @@ void LoginCheckCommand::Initialize(string inArgs) {
 	splitArgs();
 }
 bool LoginCheckCommand::Execute() {
-
+	bool status = false;
 	if (cmdArgs.find("Login") != std::string::npos) {
-		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck Login 1");
+		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck Login " +argList->at(4) );
+		// 
 	}
 	else if (cmdArgs.find("NewAccount") != std::string::npos) {
-		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck NewAccount 1");
+		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck NewAccount " + argList->at(4));
 	}
 
 }

@@ -53,8 +53,8 @@ public:
 	//void checkNewConnection();
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
-	int checkAccount(std::string, std::string, std::string);
-	void threadNewConnection(Client & newClient);
+	bool checkAccount(std::string, std::string, std::string);
+	void threadNewConnection(int clientID);
 
 
 };

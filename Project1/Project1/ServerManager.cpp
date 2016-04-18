@@ -152,21 +152,22 @@ inline bool exists(const std::string& name) {
 	return (stat(name.c_str(), &buffer) == 0);
 }
 // Gets Called in a thread
-void ServerManager::threadNewConnection(Client & newClient) {
+void ServerManager::threadNewConnection(int clientID) {
 	string initMsgBuff;
 	string cmdName;
 	Command* tempCmd;
+	Client * newClient = cm->findClientById(clientID);
 	bool success = false;
 
 	// Lock ServerManager Data
 
 	// Associate Socket with Client, then work on Client
-	if (newClient.assignSocket(*servSock)) {
-		cout << " Socket Assignment Success for " << newClient.getAccount().getIP << endl;
+	if (newClient->assignSocket(*servSock)) {
+		cout << " Socket Assignment Success for " << newClient->getAccount().getIP << endl;
 	}
 	// Receive Login or NewAccount
-	initMsgBuff = newClient.getSocket().Receive();
-	newClient.getSocket();
+	initMsgBuff = newClient->getSocket().Receive();
+	newClient->getSocket();
 	
 	// Build Command for either
 	if (initMsgBuff.find("Login") != std::string::npos) {
@@ -178,19 +179,22 @@ void ServerManager::threadNewConnection(Client & newClient) {
 	tempCmd->Initialize(initMsgBuff);
 	success = tempCmd->Execute();
 	// Send Result?  Or have the Command return the result
+	
+	delete tempCmd;
+	// LoginCheck::Execute() will find initMsgType from initMsgBuff
+	tempCmd = cmdMap["LoginCheck"]->Clone();
+	tempCmd->GetClient(*newClient);
 	if (success) {
-		delete tempCmd;
-		tempCmd = cmdMap["LoginCheck"]->Clone();
-		tempCmd->GetClient(newClient);
-		tempCmd->Initialize(initMsgBuff);
-		tempCmd->Execute();
-
+		initMsgBuff += "1";
 		// Acquire the Client
-		acquireClient(newClient);
+		acquireClient(*newClient);
+	}
+	else {
+		initMsgBuff += "0";
 	}
 
-
-
+	tempCmd->Initialize(initMsgBuff);
+	tempCmd->Execute();
 	// Unlock ServerManager Data
 }
 // checkAccount(),
@@ -198,7 +202,14 @@ void ServerManager::threadNewConnection(Client & newClient) {
 // Out:  <int> status : 0 - Account DNE
 //                     -1 - Incorrect Password
 //						1 - Success!
-int ServerManager::checkAccount(std::string, std::string, std::string){
-	int status = 0;
-	if( )
+bool ServerManager::checkAccount(std::string name , std::string pass , std::string IP){
+	Account * tAccount = new Account(name,pass,IP, "", 0);
+	bool status = 0;
+	if (exists(accountDir + tAccount->getLogin())) {
+		status = 1;
+		if (false) { // password doesn't match
+
+		}
+	}
+	return status;
 }
