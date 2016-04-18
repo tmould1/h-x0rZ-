@@ -38,9 +38,9 @@ public:
 class ClientManager {
 private:
 	static ClientManager* _instance;
-	vector<Client> clientVec;
-	vector<Client>::iterator it;
-	Client zeroClient;
+	vector<Client*> clientVec;
+	vector<Client*>::iterator it;
+	Client zeroClient();
 protected:
 	bool findClient(Client & tClient);
 public:

@@ -84,7 +84,7 @@ bool ClientManager::findClient(Client & tClient) {
 }
 
 Client* ClientManager::findClientById(int tID) {
-	vector<Client>::iterator iClient;
+	vector<Client*>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
 		if ((*iClient).getSocketID() == tID) {
 			it = iClient;
@@ -96,7 +96,7 @@ Client* ClientManager::findClientById(int tID) {
 
 ClientManager::ClientManager() {
 	it = clientVec.begin(); 
-	it = clientVec.insert(it, zeroClient);
+	it = clientVec.insert(it, &zeroClient);
 }
 
 ClientManager::~ClientManager() {
@@ -104,17 +104,20 @@ ClientManager::~ClientManager() {
 }
 
 bool ClientManager::addClient(Client & inClient) {
-	it = clientVec.insert(it, inClient);
+	it = clientVec.insert(it, &inClient);
 	return true;
 }
 
 bool ClientManager::removeClient(Client & outClient) {
+	bool status = false;
 	// Add Mutex, Semaphore, or Monitor
 	// Critical Section BEGIN
 	if (findClient(outClient)) {
 		clientVec.erase(it);
+		status = true;
 	}
 	// Critical Section END
+	return status;
 }
 
 Client& ClientManager::getClient(string name) {
