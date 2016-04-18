@@ -13,7 +13,7 @@ class Account;
 
 class Client {
 private :
-	HaxorSocket * mySock;
+	SocketAdapter * mySock;
 	vector<Command*> inMsg; // From Client to Server ( Messages to read and inform Server )
 	vector<Command*>::iterator msgIter;
 	vector<Command*> outMsg; // From Server to Client ( Messages to send to client from server )
@@ -25,7 +25,7 @@ public:
 	Client operator=(const Client obj);
 	Client();
 	~Client();
-	bool assignSocket(TCPServerSocket & server);
+	bool assignSocket(TCPServerSocket * server);
 	int getSocketID();
 	void putMsg(vector<string>&, string msg);
 	string getMsg(vector<string>&);

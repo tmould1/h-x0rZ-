@@ -92,10 +92,12 @@ void ServerManager::checkSockets() {
 	if (FD_ISSET(serverSocket, &descSet)) {
 		dummyClient = new Client();
 		thread newConnThread;
-		if (dummyClient->assignSocket(*servSock)) {
+		int sockID;
+		if (dummyClient->assignSocket(servSock)) {
 			// Successful Assignment
 		}
-		newConnThread = thread(&ServerManager::newConnectionThreadWrapper, dummyClient->getSocketID());
+		sockID = dummyClient->getSocketID();
+		newConnThread = thread(&ServerManager::newConnectionThreadWrapper, sockID);
 
 		//dummyClient = new Client();
 		//if (!dummyClient->assignSocket(*servSock)) {
@@ -166,9 +168,9 @@ void ServerManager::threadNewConnection(int clientID) {
 	// Lock ServerManager Data
 
 	// Associate Socket with Client, then work on Client
-	if (newClient->assignSocket(*servSock)) {
-		cout << " Socket Assignment Success for " << newClient->getAccount().getIP() << endl;
-	}
+//	if (newClient->assignSocket(servSock)) {
+//		cout << " Socket Assignment Success for " << newClient->getAccount().getIP() << endl;
+//	}
 	// Receive Login or NewAccount
 	initMsgBuff = newClient->getSocket().Receive();
 	newClient->getSocket();
