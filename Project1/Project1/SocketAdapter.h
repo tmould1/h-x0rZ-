@@ -4,7 +4,7 @@
 class SocketAdapter :
 	private HaxorSocket
 {
-public:
+public: 
 	SocketAdapter();
 	~SocketAdapter();
 	void Send(std::string msg);

@@ -4,7 +4,7 @@ ClientManager* ClientManager::_instance = NULL;
 
 bool Client::assignSocket(TCPServerSocket * server) {
 	bool status = false;
-        mySock = new HaxorSocket();
+        mySock = new SocketAdapter();
 	mySock->Initialize(server->accept());
 	if (mySock->IsSet()) {
 		status = true;
@@ -24,7 +24,7 @@ int Client::getSocketID() {
 	return result;
 }
 
-HaxorSocket& Client::getSocket() {
+SocketAdapter& Client::getSocket() {
 	return *mySock;
 }
 
