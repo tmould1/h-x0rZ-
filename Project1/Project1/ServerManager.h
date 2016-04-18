@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mutex>
+//#include <mutex>
 #include <thread>
 #include <map>
 #ifdef __linux__
@@ -15,23 +15,25 @@ class Command;
 class ClientManager;
 class Client;
 class HaxorSocket;
+const int maxClient = 100;
+const int defaultPort = 9999;
 
 class ServerManager {
 private :
 	static ServerManager* _instance;
 
 	TCPServerSocket * servSock;
-	const int defaultPort = 9999;
+	int port;
 
-	const int maxClients = 100;
+	int maxClients;
 
 	bool serverStatus;
 
 	ClientManager * cm;
 
-	vector<Command *> cmdPrototypes;
+	vector<Command *>* cmdPrototypes;
 
-	std::map<std::string, Command *> cmdMap;
+	std::map<std::string, Command *>* cmdMap;
 
 #ifdef __linux__
 	fd_set descSet;
@@ -54,8 +56,8 @@ public:
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
 	int checkAccount(std::string, std::string, std::string);
-	void threadNewConnection(Client & newClient);
-
+	void threadNewConnection( Client * newClient );
+        static void newConnWrapper( Client * newClient );
 
 };
 

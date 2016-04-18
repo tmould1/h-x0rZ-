@@ -15,6 +15,7 @@ void Command::GetClient(Client & actor) {
 void Command::Initialize(string inArgs) {
 	cmdArgs = inArgs;
 	splitArgs();
+        sm = sm->get();
 }
 
 void Command::splitArgs() {
@@ -31,8 +32,9 @@ Command::~Command()
 {
 }
 
+// Command Execute Section
+
 bool NewAccountCommand::Execute() {
-	ServerManager * sm = sm->get();
 	Account * tempAccount;
 	string name, pass, ip, email, admin;
 	bool bAdmin = false;
@@ -59,15 +61,9 @@ bool NewAccountCommand::Execute() {
 
 bool LoginCommand::Execute() {
 	bool status = false;
-	ServerManager * sm = sm->get();
-
 	sm->checkAccount(argList->at(1), argList->at(2), argList->at(3));
 }
 
-void LoginCheckCommand::Initialize(string inArgs) {
-	cmdArgs = inArgs;
-	splitArgs();
-}
 bool LoginCheckCommand::Execute() {
 
 	if (cmdArgs.find("Login") != std::string::npos) {

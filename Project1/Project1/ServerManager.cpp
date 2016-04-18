@@ -17,12 +17,15 @@ ServerManager::ServerManager() {
 	serverStatus = true;
 	cm = cm->get();
 
-	cmdPrototypes.push_back( new LoginCommand() );
-	cmdMap["Login"] = cmdPrototypes.at( cmdPrototypes.size() );
-	cmdPrototypes.push_back(new NewAccountCommand());
-	cmdMap["NewAccount"] = cmdPrototypes.at(cmdPrototypes.size());
-	cmdPrototypes.push_back(new LoginCheckCommand());
-	cmdMap["LoginCheck"] = cmdPrototypes.at(cmdPrototypes.size());
+        cmdPrototypes = new vector<Command*>();
+        cmdMap = new std::map<string,Command*>();
+
+	cmdPrototypes->push_back( new LoginCommand() );
+	cmdMap["Login" ] = cmdPrototypes->at( cmdPrototypes->size() );
+	cmdPrototypes->push_back(new NewAccountCommand());
+	cmdMap["NewAccount"] = cmdPrototypes->at(cmdPrototypes->size());
+	cmdPrototypes->push_back(new LoginCheckCommand());
+	cmdMap["LoginCheck"] = cmdPrototypes->at(cmdPrototypes->size());
 }
 ServerManager::ServerManager(int port) {
 	servSock = new TCPServerSocket(port);
@@ -89,10 +92,10 @@ void ServerManager::checkSockets() {
 	if (FD_ISSET(serverSocket, &descSet)) {
 		dummyClient = new Client();
 		thread newConnThread;
-		if (dummyClient->assignSocket(servSock)) {
+		if (dummyClient->assignSocket(*servSock)) {
 			// Successful Assignment
 		}
-		newConnThread = thread(threadNewConnection, *dummyClient);
+		newConnThread = thread(&ServerManager::newConnWrapper, dummyClient);
 
 		//dummyClient = new Client();
 		//if (!dummyClient->assignSocket(*servSock)) {
@@ -152,7 +155,7 @@ inline bool exists(const std::string& name) {
 	return (stat(name.c_str(), &buffer) == 0);
 }
 // Gets Called in a thread
-void ServerManager::threadNewConnection(Client & newClient) {
+void ServerManager::threadNewConnection( Client * newClient) {
 	string initMsgBuff;
 	string cmdName;
 	Command* tempCmd;
@@ -161,12 +164,12 @@ void ServerManager::threadNewConnection(Client & newClient) {
 	// Lock ServerManager Data
 
 	// Associate Socket with Client, then work on Client
-	if (newClient.assignSocket(*servSock)) {
-		cout << " Socket Assignment Success for " << newClient.getAccount().getIP << endl;
+	if (newClient->assignSocket(*servSock)) {
+		cout << " Socket Assignment Success for " << newClient->getAccount().getIP() << endl;
 	}
 	// Receive Login or NewAccount
-	initMsgBuff = newClient.getSocket().Receive();
-	newClient.getSocket();
+	initMsgBuff = newClient->getSocket().Receive();
+//	newClient->getSocket();
 	
 	// Build Command for either
 	if (initMsgBuff.find("Login") != std::string::npos) {
@@ -181,12 +184,12 @@ void ServerManager::threadNewConnection(Client & newClient) {
 	if (success) {
 		delete tempCmd;
 		tempCmd = cmdMap["LoginCheck"]->Clone();
-		tempCmd->GetClient(newClient);
+		tempCmd->GetClient(*newClient);
 		tempCmd->Initialize(initMsgBuff);
 		tempCmd->Execute();
 
 		// Acquire the Client
-		acquireClient(newClient);
+		acquireClient(*newClient);
 	}
 
 
@@ -200,5 +203,12 @@ void ServerManager::threadNewConnection(Client & newClient) {
 //						1 - Success!
 int ServerManager::checkAccount(std::string, std::string, std::string){
 	int status = 0;
-	if( )
+//	if( )
+        return status;
+}
+
+
+void ServerManager::newConnWrapper(Client * newClient) {
+    ServerManager * sm = sm->get();
+    sm->threadNewConnection(newClient);
 }

@@ -7,12 +7,16 @@
 #include "HaxorSocket.h"
 #include "Command.h"
 
+class Command;
+class ServerManager;
+class Account;
+
 class Client {
 private :
 	HaxorSocket * mySock;
-	vector<Command> inMsg; // From Client to Server ( Messages to read and inform Server )
-	vector<Command>::iterator msgIter;
-	vector<Command> outMsg; // From Server to Client ( Messages to send to client from server )
+	vector<Command*> inMsg; // From Client to Server ( Messages to read and inform Server )
+	vector<Command*>::iterator msgIter;
+	vector<Command*> outMsg; // From Server to Client ( Messages to send to client from server )
 	ServerManager * sm;
 	Account * account;
 
