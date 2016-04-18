@@ -72,9 +72,9 @@ ClientManager* ClientManager::get() {
 
 bool ClientManager::findClient(Client & tClient) {
 	bool status = false;
-	vector<Client>::iterator iClient;
+	vector<Client*>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
-		if ( (*iClient).getSocketID() == tClient.getSocketID() ) {
+		if ( (*iClient)->getSocketID() == tClient.getSocketID() ) {
 			it = iClient;
 			status = true;
 			continue;
@@ -86,17 +86,18 @@ bool ClientManager::findClient(Client & tClient) {
 Client* ClientManager::findClientById(int tID) {
 	vector<Client*>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
-		if ((*iClient).getSocketID() == tID) {
+		if ((*iClient)->getSocketID() == tID) {
 			it = iClient;
 			continue;
 		}
 	}
-	return &(*it);
+	return (*it);
 }
 
 ClientManager::ClientManager() {
-	it = clientVec.begin(); 
-	it = clientVec.insert(it, &zeroClient);
+        Client * firstClient = new Client();
+	it = clientVec.begin();
+	it = clientVec.insert(it, firstClient);
 }
 
 ClientManager::~ClientManager() {
@@ -121,6 +122,6 @@ bool ClientManager::removeClient(Client & outClient) {
 }
 
 Client& ClientManager::getClient(string name) {
-	return zeroClient;
+	return *(new Client());
 }
 
