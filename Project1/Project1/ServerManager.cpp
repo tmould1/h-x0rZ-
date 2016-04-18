@@ -17,15 +17,15 @@ ServerManager::ServerManager() {
 	serverStatus = true;
 	cm = cm->get();
 
-        cmdPrototypes = new vector<Command*>();
-        cmdMap = new std::map<string,Command*>();
+    cmdPrototypes = new vector<Command*>();
+    cmdMap = new std::map<string,Command*>();
 
 	cmdPrototypes->push_back( new LoginCommand() );
-	(*cmdMap)["Login"] = cmdPrototypes->at( cmdPrototypes->size() );
+	(*cmdMap)["Login"] = cmdPrototypes->at( cmdPrototypes->size()-1 );
 	cmdPrototypes->push_back(new NewAccountCommand());
-	(*cmdMap)["NewAccount"] = cmdPrototypes->at(cmdPrototypes->size());
+	(*cmdMap)["NewAccount"] = cmdPrototypes->at(cmdPrototypes->size()-1);
 	cmdPrototypes->push_back(new LoginCheckCommand());
-	(*cmdMap)["LoginCheck"] = cmdPrototypes->at(cmdPrototypes->size());
+	(*cmdMap)["LoginCheck"] = cmdPrototypes->at(cmdPrototypes->size()-1);
 }
 ServerManager::ServerManager(int port) {
 	servSock = new TCPServerSocket(port);
