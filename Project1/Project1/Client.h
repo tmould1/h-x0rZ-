@@ -4,16 +4,17 @@
 #include "PracticalSocket.h"
 #include "ServerManager.h"
 #include "Account.h"
-#include "HaxorSocket.h"
+#include "SocketAdapter.h"
 #include "Command.h"
 
 class Command;
 class ServerManager;
 class Account;
+class SocketAdapter;
 
 class Client {
 private :
-	SocketAdapter * mySock;
+	HaxorSocket * mySock;
 	vector<Command*> inMsg; // From Client to Server ( Messages to read and inform Server )
 	vector<Command*>::iterator msgIter;
 	vector<Command*> outMsg; // From Server to Client ( Messages to send to client from server )

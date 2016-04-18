@@ -2,22 +2,22 @@
 #include "HaxorSocket.h"
 #include "PracticalSocket.h"
 class SocketAdapter :
-	private HaxorSocket
+	public HaxorSocket
 {
-public: 
+public:
 	SocketAdapter();
 	~SocketAdapter();
 	void Send(std::string msg);
 	std::string Receive();
 	void Socket();
 	void Initialize(TCPSocket * tcpSockPtr);
-	bool isSet();
+	bool IsSet();
 	int GetID() {
 		return adaptee->getSockDesc();
 	}
 private:
 	TCPSocket* adaptee;
-	int msgLength = 1024;
-	bool set = false;
+	int msgLength;
+	bool set;
 };
 

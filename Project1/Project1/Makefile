@@ -1,6 +1,6 @@
 CC = g++
-OPTIONS = -std=c++14 -lpthread -g -pthread
-OBJ = PracticalSocket.o ServerManager.o Client.o Account.o Command.o entry.o
+OPTIONS = -std=c++11 -lpthread -g -pthread
+OBJ = PracticalSocket.o ServerManager.o Client.o Account.o Command.o entry.o SocketAdapter.o HaxorSocket.o
 
 server : $(OBJ)
 	$(CC) $(OPTIONS) -o server $(OBJ)

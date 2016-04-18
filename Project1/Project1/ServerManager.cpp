@@ -91,25 +91,14 @@ void ServerManager::checkSockets() {
 	// If Server Socket has something, it's a new connection
 	if (FD_ISSET(serverSocket, &descSet)) {
 		dummyClient = new Client();
-		thread newConnThread;
 		int sockID;
 		if (dummyClient->assignSocket(servSock)) {
 			// Successful Assignment
 		}
 		sockID = dummyClient->getSocketID();
-		newConnThread = thread(&ServerManager::newConnectionThreadWrapper, sockID);
-
-		//dummyClient = new Client();
-		//if (!dummyClient->assignSocket(*servSock)) {
-		//	cout << "Could not assign new Client Socket" << endl;
-		//}
-		//
-		//acquireClient(*dummyClient);
-		//dummyClient.mySock->recv()
-//		temp = getLastClient();
-//		temp->setNextClient(dummyClient);
+		thread newConnThread(&ServerManager::newConnectionThreadWrapper, sockID);
+                newConnThread.detach();
 	}
-
 	// Otherwise it is I/O
 
 #endif
@@ -158,24 +147,27 @@ inline bool exists(const std::string& name) {
 }
 // Gets Called in a thread
 void ServerManager::threadNewConnection(int clientID) {
-
 	string initMsgBuff;
 	string cmdName;
 	Command* tempCmd;
 	Client * newClient = cm->findClientById(clientID);
 	bool success = false;
 
-	// Lock ServerManager Data
+        while ( !mtx.try_lock() ){
+          // Keep Trying!
+        }
+        // Mutex is Locked
 
 	// Associate Socket with Client, then work on Client
 //	if (newClient->assignSocket(servSock)) {
 //		cout << " Socket Assignment Success for " << newClient->getAccount().getIP() << endl;
 //	}
 	// Receive Login or NewAccount
-	initMsgBuff = newClient->getSocket().Receive();
-	newClient->getSocket();
+//	initMsgBuff = newClient->getSocket().Receive();
+	initMsgBuff = "Login Todd Password 127.0.0.1";
+///	newClient->getSocket();
 
-	
+
 	// Build Command for either
 	if (initMsgBuff.find("Login") != std::string::npos) {
 		tempCmd = (*cmdMap)["Login"]->Clone();
@@ -185,8 +177,8 @@ void ServerManager::threadNewConnection(int clientID) {
 	}
 	tempCmd->Initialize(initMsgBuff);
 	success = tempCmd->Execute();
+
 	// Send Result?  Or have the Command return the result
-	
 	delete tempCmd;
 	// LoginCheck::Execute() will find initMsgType from initMsgBuff
 	tempCmd = (*cmdMap)["LoginCheck"]->Clone();
@@ -204,6 +196,7 @@ void ServerManager::threadNewConnection(int clientID) {
 	tempCmd->Initialize(initMsgBuff);
 	tempCmd->Execute();
 	// Unlock ServerManager Data
+	mtx.unlock();
 }
 // checkAccount(),
 // In:  name, pass, IP

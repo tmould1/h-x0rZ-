@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
 
         servBoss->setRunning();
 
-        cout << " is Running is " << (servBoss->isRunning()? "True" : "False") << endl;
+        cout << "Server Initialization success is " << (servBoss->isRunning()? "True" : "False") << endl;
 
 	GameLoop( *servBoss );
 

@@ -4,14 +4,16 @@
 
 SocketAdapter::SocketAdapter()
 {
+	set = false;
+	msgLength = 1025;
 }
 
 
 SocketAdapter::~SocketAdapter()
-{ 
+{
 }
 
-bool SocketAdapter::isSet() {
+bool SocketAdapter::IsSet() {
 	return set;
 }
 
@@ -30,8 +32,9 @@ std::string SocketAdapter::Receive()
 {
 	string message;
 	char* cmessage;
-	adaptee->recv((void *)cmessage, msgLength);
-	message = cmessage;
+	while (adaptee->recv((void *)cmessage, msgLength) > 0 ){
+	  message = cmessage;
+        }
 	return message;
 }
 

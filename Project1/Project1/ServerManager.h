@@ -1,6 +1,6 @@
 #pragma once
 
-//#include <mutex>
+#include <mutex>
 #include <thread>
 #include <map>
 #include <vector>
@@ -21,6 +21,7 @@ const int defaultPort = 9999;
 
 class ServerManager {
 private :
+        mutex mtx;
 	static ServerManager* _instance;
 
 	TCPServerSocket * servSock;
