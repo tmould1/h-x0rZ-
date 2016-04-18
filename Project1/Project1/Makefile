@@ -1,5 +1,5 @@
 CC = g++
-OPTIONS = -std=c++11 -lpthread -g -pthread
+OPTIONS = -std=c++14 -lpthread -g -pthread
 OBJ = PracticalSocket.o ServerManager.o Client.o Account.o Command.o entry.o
 
 server : $(OBJ)

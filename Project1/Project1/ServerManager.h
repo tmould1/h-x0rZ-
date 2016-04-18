@@ -55,16 +55,9 @@ public:
 	//void checkNewConnection();
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
-<<<<<<< HEAD
 	bool checkAccount(std::string, std::string, std::string);
 	void threadNewConnection(int clientID);
-
-=======
-	int checkAccount(std::string, std::string, std::string);
-	void threadNewConnection( Client * newClient );
-        static void newConnWrapper( Client * newClient );
->>>>>>> origin/master
-
+        static void newConnectionThreadWrapper(int clientID);
 };
 
 
