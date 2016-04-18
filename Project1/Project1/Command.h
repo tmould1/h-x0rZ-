@@ -2,8 +2,11 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include "ServerManager.h"
+//#include "ServerManager.h"
 #include "Client.h"
+
+class ServerManager;
+class Client;
 
 class Command
 {
@@ -11,6 +14,7 @@ protected:
 	vector<std::string> * argList;
 	string cmdArgs;
 	Client * clientActor;
+        ServerManager * sm;
 public:
 	Command();
 	virtual void GetClient(Client & actor);
@@ -39,10 +43,8 @@ public:
 };
 
 class LoginCheckCommand : public Command {
-	ServerManager * sm = sm->get();
-
 public:
-	void Initialize(string inArgs);
+//	void Initialize(string inArgs);
 	bool Execute();
 	Command * Clone() {
 		return new LoginCheckCommand();

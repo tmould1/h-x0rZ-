@@ -1,6 +1,6 @@
 CC = g++
-OPTIONS = -std=c++14 -lpthread -g -pthread
-OBJ = PracticalSocket.o Client.o Account.o Command.o entry.o ServerManager.o
+OPTIONS = -std=c++11 -lpthread -g -pthread
+OBJ = PracticalSocket.o ServerManager.o Client.o Account.o Command.o entry.o
 
 server : $(OBJ)
 	$(CC) $(OPTIONS) -o server $(OBJ)
@@ -18,6 +18,9 @@ PracticalSocket.o: PracticalSocket.cpp
 
 Client.o: Client.cpp ServerManager.h
 	$(CC) $(OPTIONS) -c Client.cpp
+
+Command.o: Command.cpp
+	$(CC) $(OPTIONS) -c Command.cpp
 
 entry.o: entry.cpp
 	$(CC) $(OPTIONS) -c entry.cpp
