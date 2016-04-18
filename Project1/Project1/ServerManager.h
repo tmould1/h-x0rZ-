@@ -10,11 +10,12 @@
 #include "PracticalSocket.h"
 #include "Client.h"
 #include "Account.h"
-#include "Command.h"
+//#include "Command.h"
 
-class Client;
+class Command;
 class ClientManager;
-class Account;
+class Client;
+class HaxorSocket;
 
 class ServerManager {
 private :

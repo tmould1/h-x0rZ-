@@ -27,9 +27,9 @@ public:
 	void splitArgs( ) {
 		stringstream ss(cmdArgs);
 		string arg;
-		char * delimiter = " ";
+		char delimiter = ' ';
 
-		while (getline(ss, arg, *delimiter)) {
+		while (getline(ss, arg, delimiter)) {
 			argList->push_back(arg);
 		}
 	}

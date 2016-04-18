@@ -3,13 +3,9 @@
 #include <vector>
 #include "PracticalSocket.h"
 #include "ServerManager.h"
-#include "Subject.h"
-#include "Observer.h"
 #include "Account.h"
 #include "HaxorSocket.h"
-
-class Account;
-class ServerManager;
+#include "Command.h"
 
 class Client {
 private :
@@ -33,8 +29,6 @@ public:
 	Account & getAccount();
 	void setAccount(Account &);
 	HaxorSocket & getSocket();
-//	Client* getNextClient();
-	//void setNextClient( Client * next );
 };
 
 class ClientManager {
