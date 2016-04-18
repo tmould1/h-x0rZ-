@@ -10,8 +10,14 @@ public:
 	void Send(std::string msg);
 	std::string Receive();
 	void Socket();
+	void Initialize(TCPSocket * tcpSockPtr);
+	bool isSet();
+	int GetID() {
+		return adaptee->getSockDesc();
+	}
 private:
 	TCPSocket* adaptee;
 	int msgLength = 1024;
+	bool set = false;
 };
 

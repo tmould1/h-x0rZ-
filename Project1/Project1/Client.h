@@ -14,13 +14,11 @@ class ServerManager;
 class Client {
 private :
 	HaxorSocket * mySock;
-	//Client * nextClient;
-	vector<string> inMsg; // From Client to Server ( Messages to read and inform Server )
-	vector<string>::iterator msgIter;
-	vector<string> outMsg; // From Server to Client ( Messages to send to client from server )
+	vector<Command> inMsg; // From Client to Server ( Messages to read and inform Server )
+	vector<Command>::iterator msgIter;
+	vector<Command> outMsg; // From Server to Client ( Messages to send to client from server )
 	ServerManager * sm;
 	Account * account;
-//	SocketSubject socketSubject;
 
 
 public:

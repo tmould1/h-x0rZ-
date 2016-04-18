@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include "ServerManager.h"
+#include "Client.h"
 
 class Command
 {

@@ -89,6 +89,9 @@ void ServerManager::checkSockets() {
 	if (FD_ISSET(serverSocket, &descSet)) {
 		dummyClient = new Client();
 		thread newConnThread;
+		if (dummyClient->assignSocket(servSock)) {
+			// Successful Assignment
+		}
 		newConnThread = thread(threadNewConnection, *dummyClient);
 
 		//dummyClient = new Client();

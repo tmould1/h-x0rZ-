@@ -4,8 +4,8 @@ ClientManager* ClientManager::_instance = NULL;
 
 bool Client::assignSocket(TCPServerSocket & server) {
 	bool status = false;
-	mySock = server.accept();
-	if (mySock) {
+	mySock->Initialize(server.accept());
+	if (mySock->IsSet()) {
 		status = true;
 	}
 	return status;
@@ -13,30 +13,18 @@ bool Client::assignSocket(TCPServerSocket & server) {
 
 Client Client::operator=(const Client obj) {
 	mySock = obj.mySock;
-	//nextClient = obj.nextClient;
 }
-
-//Client* Client::getNextClient() {
-//	return nextClient;
-//}
-
-//void Client::setNextClient( Client * next) {
-//	nextClient = next;
-//}
 
 int Client::getSocketID() {
-	return (mySock ? mySock->getSockDesc() : -1);
+	return (mySock->IsSet() ? mySock->GetID(): -1);
 }
 
-TCPSocket& Client::getSocket() {
+HaxorSocket& Client::getSocket() {
 	return *mySock;
 }
 
 Client::Client(){
-
 	mySock = NULL;
-//	socketSubject.setState(mySock);
-	//nextClient = NULL;
 }
 Client::~Client() {
 
@@ -51,14 +39,14 @@ void Client::putMsg(vector<string> & msgVector, string msg) {
 string Client::getMsg( vector<string> & msgVector) {
 	// Mutex Lock
 	string temp = msgVector.front();
-	msgVector.erase(inMsg.begin());
+	msgVector.erase(msgVector.begin());
 	//Mutex Unlock
 	return temp;
 }
 
 void Client::recMsg(vector<string> & msgBuffer) {
 	sm = sm->get();
-	putMsg(msgBuffer, sm->getMsgFromSocket(*mySock));
+	putMsg(msgBuffer, sm->GetMsgFromSocket(*mySock));
 }
 
 Account& Client::getAccount() {

@@ -11,6 +11,14 @@ SocketAdapter::~SocketAdapter()
 { 
 }
 
+bool SocketAdapter::isSet() {
+	return set;
+}
+
+void SocketAdapter::Initialize(TCPSocket* tcpSockPtr) {
+	adaptee = tcpSockPtr;
+	set = true;
+}
 
 void SocketAdapter::Send(std::string msg)
 {
