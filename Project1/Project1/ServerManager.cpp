@@ -20,6 +20,7 @@ ServerManager::ServerManager() {
     cmdPrototypes = new vector<Command*>();
     cmdMap = new std::map<string,Command*>();
 
+	// Load Available Commands
 	cmdPrototypes->push_back( new LoginCommand() );
 	(*cmdMap)["Login"] = cmdPrototypes->at( cmdPrototypes->size()-1 );
 	cmdPrototypes->push_back(new NewAccountCommand());
@@ -27,6 +28,7 @@ ServerManager::ServerManager() {
 	cmdPrototypes->push_back(new LoginCheckCommand());
 	(*cmdMap)["LoginCheck"] = cmdPrototypes->at(cmdPrototypes->size()-1);
 }
+
 ServerManager::ServerManager(int port) {
 	servSock = new TCPServerSocket(port);
 	serverStatus = true;
@@ -34,26 +36,12 @@ ServerManager::ServerManager(int port) {
 }
 
 ServerManager::~ServerManager() {
-	//Client * tmp = clientList;
-	//while (tmp) {
-	//	//dummyClient = tmp->getNextClient();
-	//	delete tmp;
-	//	tmp = dummyClient;
-	//}
 	delete servSock;
 }
 
 void ServerManager::acquireClient(Client & inClient) {
 	cm->addClient(&inClient);
 }
-
-//Client* ServerManager::getLastClient() {
-//	Client * clientIterator = clientList;
-//	while (clientIterator->getNextClient()) {
-//		clientIterator = clientIterator->getNextClient();
-//	}
-//	return clientIterator;
-//}
 
 bool ServerManager::isRunning() {
 	return serverStatus;
@@ -68,14 +56,13 @@ void ServerManager::abort() {
 }
 
 void ServerManager::checkSockets() {
-	//Client * temp = clientList;
 	int maxDesc, sd, serverSocket = servSock->getSockDesc();
 	Client * dummyClient;
 
 #ifdef __linux__
 	struct timeval tv;
 	tv.tv_sec = 0;
-	tv.tv_usec = 100000;
+	tv.tv_usec = 500000;
 #endif
 
 #ifdef __linux__
@@ -147,6 +134,7 @@ inline bool exists(const std::string& name) {
 	struct stat buffer;
 	return (stat(name.c_str(), &buffer) == 0);
 }
+
 // Gets Called in a thread
 void ServerManager::threadNewConnection(int clientID) {
 	string initMsgBuff;
