@@ -28,6 +28,7 @@ int main(int argc, char * argv[]) {
 
         servBoss->setRunning();
 
+        cout << "H@x0rZ! Server is up and running on default port 9999" << endl;
         cout << "Server Initialization success is " << (servBoss->isRunning()? "True" : "False") << endl;
 
 	GameLoop( *servBoss );

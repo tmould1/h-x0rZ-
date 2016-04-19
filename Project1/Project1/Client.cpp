@@ -81,7 +81,7 @@ bool ClientManager::findClient(Client & tClient) {
 		if ( (*iClient)->getSocketID() == tClient.getSocketID() ) {
 			it = iClient;
 			status = true;
-			continue;
+			break;
 		}
 	}
 	return status;
@@ -92,7 +92,7 @@ Client* ClientManager::findClientById(int tID) {
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
 		if ((*iClient)->getSocketID() == tID) {
 			it = iClient;
-			continue;
+			break;
 		}
 	}
 	return (*it);
@@ -108,8 +108,8 @@ ClientManager::~ClientManager() {
 	delete _instance;
 }
 
-bool ClientManager::addClient(Client & inClient) {
-	it = clientVec.insert(it, &inClient);
+bool ClientManager::addClient(Client * inClient) {
+	it = clientVec.insert(it, inClient);
 	return true;
 }
 

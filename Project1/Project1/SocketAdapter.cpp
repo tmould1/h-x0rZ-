@@ -24,7 +24,10 @@ void SocketAdapter::Initialize(TCPSocket* tcpSockPtr) {
 
 void SocketAdapter::Send(std::string msg)
 {
-	adaptee->send((void *)msg.c_str(), msg.length());
+        msg += "\n";
+        if(  IsSet() ) {
+		adaptee->send((void *)msg.c_str(), msg.length()+1);
+        }
 }
 
 

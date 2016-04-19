@@ -44,7 +44,7 @@ ServerManager::~ServerManager() {
 }
 
 void ServerManager::acquireClient(Client & inClient) {
-	cm->addClient(inClient);
+	cm->addClient(&inClient);
 }
 
 //Client* ServerManager::getLastClient() {
@@ -93,9 +93,11 @@ void ServerManager::checkSockets() {
 		dummyClient = new Client();
 		int sockID;
 		if (dummyClient->assignSocket(servSock)) {
+			cm->addClient(dummyClient);
 			// Successful Assignment
 		}
 		sockID = dummyClient->getSocketID();
+                cout << "SocketID assigned: " << sockID;
 		thread newConnThread(&ServerManager::newConnectionThreadWrapper, sockID);
                 newConnThread.detach();
 	}
@@ -153,19 +155,16 @@ void ServerManager::threadNewConnection(int clientID) {
 	Client * newClient = cm->findClientById(clientID);
 	bool success = false;
 
+        cout << " and new connection thread found " << newClient->getSocketID() << endl;
+
         while ( !mtx.try_lock() ){
           // Keep Trying!
         }
         // Mutex is Locked
 
-	// Associate Socket with Client, then work on Client
-//	if (newClient->assignSocket(servSock)) {
-//		cout << " Socket Assignment Success for " << newClient->getAccount().getIP() << endl;
-//	}
 	// Receive Login or NewAccount
 //	initMsgBuff = newClient->getSocket().Receive();
 	initMsgBuff = "Login Todd Password 127.0.0.1";
-///	newClient->getSocket();
 
 
 	// Build Command for either
@@ -180,22 +179,24 @@ void ServerManager::threadNewConnection(int clientID) {
 
 	// Send Result?  Or have the Command return the result
 	delete tempCmd;
+
 	// LoginCheck::Execute() will find initMsgType from initMsgBuff
 	tempCmd = (*cmdMap)["LoginCheck"]->Clone();
-	tempCmd->GetClient(*newClient);
-	if (success) {
-		delete tempCmd;
-		tempCmd = (*cmdMap)["LoginCheck"]->Clone();
-		tempCmd->GetClient(*newClient);
-		tempCmd->Initialize(initMsgBuff);
-		tempCmd->Execute();
+	tempCmd->GetClient(newClient);
 
+	if (success) {
+		tempCmd->Initialize(initMsgBuff + " 1");
 		// Acquire the Client
 		acquireClient(*newClient);
 	}
-	tempCmd->Initialize(initMsgBuff);
+        else {
+		tempCmd->Initialize(initMsgBuff + " 0");
+        }
+
 	tempCmd->Execute();
 	// Unlock ServerManager Data
+
+        cout << "Finished handling new Connection!" << endl;
 	mtx.unlock();
 }
 // checkAccount(),

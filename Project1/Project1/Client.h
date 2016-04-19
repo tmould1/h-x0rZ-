@@ -48,7 +48,7 @@ public:
 	static ClientManager* get();
 	ClientManager();
 	~ClientManager();
-	bool addClient(Client & inClient);
+	bool addClient(Client * inClient);
 	bool removeClient( Client & outClient );
 	Client & getClient( string name );
 	Client * findClientById(int tID);

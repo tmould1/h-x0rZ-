@@ -17,7 +17,7 @@ protected:
         ServerManager * sm;
 public:
 	Command();
-	virtual void GetClient(Client & actor);
+	virtual void GetClient(Client * actor);
 	virtual void Initialize(string inArgs);
 	void splitArgs();
 
