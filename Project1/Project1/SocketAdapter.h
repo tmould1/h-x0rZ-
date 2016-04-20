@@ -2,7 +2,7 @@
 #include "HaxorSocket.h"
 #include "PracticalSocket.h"
 class SocketAdapter :
-	private HaxorSocket
+	public HaxorSocket
 {
 public:
 	SocketAdapter();
@@ -10,8 +10,14 @@ public:
 	void Send(std::string msg);
 	std::string Receive();
 	void Socket();
+	void Initialize(TCPSocket * tcpSockPtr);
+	bool IsSet();
+	int GetID() {
+		return adaptee->getSockDesc();
+	}
 private:
 	TCPSocket* adaptee;
-	int msgLength = 1024;
+	int msgLength;
+	bool set;
 };
 

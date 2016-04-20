@@ -2,10 +2,10 @@
 
 ClientManager* ClientManager::_instance = NULL;
 
-bool Client::assignSocket(TCPServerSocket & server) {
+bool Client::assignSocket(TCPServerSocket * server) {
 	bool status = false;
-	mySock = server.accept();
-	if (mySock) {
+	mySock->Initialize(server->accept());
+	if (mySock->IsSet()) {
 		status = true;
 	}
 	return status;
@@ -13,30 +13,22 @@ bool Client::assignSocket(TCPServerSocket & server) {
 
 Client Client::operator=(const Client obj) {
 	mySock = obj.mySock;
-	//nextClient = obj.nextClient;
 }
-
-//Client* Client::getNextClient() {
-//	return nextClient;
-//}
-
-//void Client::setNextClient( Client * next) {
-//	nextClient = next;
-//}
 
 int Client::getSocketID() {
-	return (mySock ? mySock->getSockDesc() : -1);
+        int result = -1;
+	if ( mySock != NULL && mySock->IsSet() ) {
+	  result = mySock->GetID();
+        }
+	return result;
 }
 
-TCPSocket& Client::getSocket() {
+HaxorSocket& Client::getSocket() {
 	return *mySock;
 }
 
 Client::Client(){
-
-	mySock = NULL;
-//	socketSubject.setState(mySock);
-	//nextClient = NULL;
+	mySock = new SocketAdapter();
 }
 Client::~Client() {
 
@@ -51,14 +43,14 @@ void Client::putMsg(vector<string> & msgVector, string msg) {
 string Client::getMsg( vector<string> & msgVector) {
 	// Mutex Lock
 	string temp = msgVector.front();
-	msgVector.erase(inMsg.begin());
+	msgVector.erase(msgVector.begin());
 	//Mutex Unlock
 	return temp;
 }
 
 void Client::recMsg(vector<string> & msgBuffer) {
 	sm = sm->get();
-	putMsg(msgBuffer, sm->getMsgFromSocket(*mySock));
+	putMsg(msgBuffer, sm->GetMsgFromSocket(*mySock));
 }
 
 Account& Client::getAccount() {
@@ -84,47 +76,56 @@ ClientManager* ClientManager::get() {
 
 bool ClientManager::findClient(Client & tClient) {
 	bool status = false;
-	vector<Client>::iterator iClient;
+	vector<Client*>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
-		if ( (*iClient).getSocketID() == tClient.getSocketID() ) {
+		if ( (*iClient)->getSocketID() == tClient.getSocketID() ) {
 			it = iClient;
 			status = true;
+			break;
 		}
 	}
-	//foreach (Client iClient : clientVec) {
-	//for ( auto iClient : clientVec ){
-	//  if (iClient.getSocket() == tClient.getSocket()) {
-	//		it = clientVe);
-	//		status = true;
-	//	}
-	//}
 	return status;
 }
 
+Client* ClientManager::findClientById(int tID) {
+	vector<Client*>::iterator iClient;
+	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
+		if ((*iClient)->getSocketID() == tID) {
+			it = iClient;
+			break;
+		}
+	}
+	return (*it);
+}
+
 ClientManager::ClientManager() {
-	it = clientVec.begin(); 
-	it = clientVec.insert(it, zeroClient);
+        Client * firstClient = new Client();
+	it = clientVec.begin();
+	it = clientVec.insert(it, firstClient);
 }
 
 ClientManager::~ClientManager() {
 	delete _instance;
 }
 
-bool ClientManager::addClient(Client & inClient) {
+bool ClientManager::addClient(Client * inClient) {
 	it = clientVec.insert(it, inClient);
 	return true;
 }
 
 bool ClientManager::removeClient(Client & outClient) {
+	bool status = false;
 	// Add Mutex, Semaphore, or Monitor
 	// Critical Section BEGIN
 	if (findClient(outClient)) {
 		clientVec.erase(it);
+		status = true;
 	}
 	// Critical Section END
+	return status;
 }
 
 Client& ClientManager::getClient(string name) {
-	return zeroClient;
+	return *(new Client());
 }
 
