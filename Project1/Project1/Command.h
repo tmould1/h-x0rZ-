@@ -61,14 +61,6 @@ public:
 };
 
 // Commands From Server
-class CreateGameCommand : public Command {
-public:
-	bool Execute();
-	Command * Clone() {
-		return new CreateGameCommand();
-	}
-};
-
 class UpdateGameCommand : public Command {
 public:
 	bool Execute();

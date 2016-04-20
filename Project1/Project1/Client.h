@@ -54,7 +54,8 @@ public:
 	Client & getClient( string name );
 	Client * findClientById(int tID);
 	void populateFDSets();
-	void handleExceptions()
+	void handleExceptions();
+	void Initialize();
 
 };
 

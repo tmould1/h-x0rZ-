@@ -13,9 +13,8 @@ const char * accountDir = "../accounts/";
 bool exists(const std::string& );
 
 ServerManager::ServerManager() {
-	servSock = new TCPServerSocket(defaultPort);
+	servSock = new TCPServerSocket(9999);
 	serverStatus = true;
-	cm = cm->get();
 
     cmdPrototypes = new vector<Command*>();
     cmdMap = new std::map<string,Command*>();
@@ -30,9 +29,6 @@ ServerManager::ServerManager() {
 }
 
 ServerManager::ServerManager(int port) {
-	servSock = new TCPServerSocket(port);
-	serverStatus = true;
-	cm = cm->get();
 }
 
 ServerManager::~ServerManager() {
@@ -69,14 +65,15 @@ void ServerManager::initializeFDSets() {
 
 void ServerManager::getNewSockets() {
 #ifdef __linux__
-	FD_SET(maxDesc = serverSocket, &inSet); 
+	FD_SET(maxDesc = servSock->getSockDesc(), &inSet); 
 #endif
 }
 
 void ServerManager::handleNewConnection() {
 #ifdef __linux__
+        Client * dummyClient;
 	// If Server Socket has something, it's a new connection
-	if (FD_ISSET(serverSocket, &inSet)) {
+	if (FD_ISSET(servSock->getSockDesc(), &inSet)) {
 		dummyClient = new Client();
 		int sockID;
 		if (dummyClient->assignSocket(servSock)) {
@@ -95,19 +92,16 @@ void ServerManager::handleNewConnection() {
 
 void ServerManager::Select() {
 #ifdef __linux__
+        struct timeval tv;
+        tv.tv_sec = 0;
+        tv.tv_usec = 500000;
+
 	select(maxDesc + 1, &inSet, NULL, NULL, &tv);
 #endif
 
 }
 void ServerManager::checkSockets() {
-	int sd, serverSocket = servSock->getSockDesc();
-	Client * dummyClient;
-
-#ifdef __linux__
-	struct timeval tv;
-	tv.tv_sec = 0;
-	tv.tv_usec = 500000;
-#endif
+	int sd;
 
 	// Zero the Set out
 	initializeFDSets();
@@ -123,8 +117,9 @@ void ServerManager::checkSockets() {
 
 void ServerManager::getInput() {
 	handleNewConnection();
-	cm->handleExceptions();
+//	cm->handleExceptions();
 	//Check 
+        // cm->getInputFromClients();
 
 }
 
@@ -144,6 +139,7 @@ void ServerManager::SendMessageToSocket(HaxorSocket & inSock, string message) {
 
 void ServerManager::registerClientManager() {
 	cm = cm->get();
+        cm->Initialize();
 }
 
 bool ServerManager::AddAccount(Account & newAccount) {
@@ -249,12 +245,14 @@ void ServerManager::newConnectionThreadWrapper( int clientID ){
 
 void ServerManager::setDescriptor(HaxorSocket * thisSocket) {
 #ifdef __linux__
+        if ( thisSocket->IsSet() ) {
 	if (maxDesc < thisSocket->GetID()) {
-		maxDesc = this->GetID();
+		maxDesc = thisSocket->GetID();
 	}
-	FD_ZERO(thisSocket->GetID(), &inSet);
-	FD_ZERO(thisSocket->GetID(), &outSet);
-	FD_ZERO(thisSocket->GetID(), &excSet);
+	FD_SET(thisSocket->GetID(), &inSet);
+	FD_SET(thisSocket->GetID(), &outSet);
+	FD_SET(thisSocket->GetID(), &excSet);
+        }
 
 #endif
 }
@@ -262,10 +260,12 @@ void ServerManager::setDescriptor(HaxorSocket * thisSocket) {
 void ServerManager::HandleExceptionSockets(HaxorSocket * thisSocket) {
 
 #ifdef __linux__
-	if (FD_ISSET(thisSocket->GetID(), &excSet)) {
-		FD_CLR(thisSocket->GetID(), &inSet);
-		FD_CLR(thisSocket->GetID(), &outSet);
-	}
+        if( thisSocket->IsSet() ) {
+		if (FD_ISSET(thisSocket->GetID(), &excSet)) {
+			FD_CLR(thisSocket->GetID(), &inSet);
+			FD_CLR(thisSocket->GetID(), &outSet);
+		}
+        }
 #endif
 
 }

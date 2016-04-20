@@ -66,7 +66,7 @@ void Client::setAccount(Account& inAcct) {
 
 
 ClientManager* ClientManager::get() {
-	if (!_instance) {
+	if ( _instance == NULL ) {
 		_instance = new ClientManager();
 	}
 	return _instance;
@@ -103,8 +103,13 @@ ClientManager::ClientManager() {
     Client * firstClient = new Client();
 	it = clientVec.begin();
 	it = clientVec.insert(it, firstClient);
+}
+
+void ClientManager::Initialize(){
 	sm = sm->get();
 }
+
+
 
 ClientManager::~ClientManager() {
 	delete _instance;

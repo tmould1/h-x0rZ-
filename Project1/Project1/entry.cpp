@@ -17,6 +17,7 @@ int main(int argc, char * argv[]) {
 	Account hardikaAccount("Hardika", "Kolaches", "127.0.0.1", "hardika@amazing.org", true);
 
 	servBoss = servBoss->get();
+        servBoss->registerClientManager();
 
         servBoss->AddAccount( toddAccount );
         servBoss->AddAccount( willAccount );
