@@ -15,6 +15,7 @@ public:
 	int GetID() {
 		return adaptee->getSockDesc();
 	}
+	void Close();
 private:
 	TCPSocket* adaptee;
 	int msgLength;

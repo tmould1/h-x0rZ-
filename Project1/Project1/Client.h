@@ -42,6 +42,7 @@ private:
 	vector<Client*> clientVec;
 	vector<Client*>::iterator it;
 	Client zeroClient();
+	ServerManager * sm;
 protected:
 	bool findClient(Client & tClient);
 public:
@@ -52,6 +53,8 @@ public:
 	bool removeClient( Client & outClient );
 	Client & getClient( string name );
 	Client * findClientById(int tID);
+	void populateFDSets();
+	void handleExceptions()
 
 };
 

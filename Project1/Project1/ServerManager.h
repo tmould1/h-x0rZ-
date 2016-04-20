@@ -38,8 +38,9 @@ private :
 	std::map<std::string, Command *>* cmdMap;
 
 #ifdef __linux__
-	fd_set descSet;
+	fd_set inSet, outSet, excSet;
 #endif
+	int maxDesc;
 
 public:
 	static ServerManager* get();
@@ -47,6 +48,7 @@ public:
 	ServerManager(int port);
 	~ServerManager();
 	void acquireClient(Client & inClient);
+	void releaseClient(Client * outClient);
 	//Client* getLastClient();
 	bool isRunning();
     void setRunning();
@@ -59,7 +61,17 @@ public:
 	bool AddAccount(Account & newAccount);
 	bool checkAccount(std::string, std::string, std::string);
 	void threadNewConnection(int clientID);
-        static void newConnectionThreadWrapper(int clientID);
+    static void newConnectionThreadWrapper(int clientID);
+	void initializeFDSets();
+	void getNewSockets();
+	void handleNewConnection();
+	void setDescriptor(HaxorSocket *);
+	void HandleExceptionSockets(HaxorSocket *);
+	void Select();
+	void getInput();
+	void processInput();
+	void gameUpdate();
+	void handleOutput();
 };
 
 

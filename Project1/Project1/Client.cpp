@@ -100,9 +100,10 @@ Client* ClientManager::findClientById(int tID) {
 }
 
 ClientManager::ClientManager() {
-        Client * firstClient = new Client();
+    Client * firstClient = new Client();
 	it = clientVec.begin();
 	it = clientVec.insert(it, firstClient);
+	sm = sm->get();
 }
 
 ClientManager::~ClientManager() {
@@ -118,7 +119,9 @@ bool ClientManager::removeClient(Client & outClient) {
 	bool status = false;
 	// Add Mutex, Semaphore, or Monitor
 	// Critical Section BEGIN
+	// Clean up and Remove the Client
 	if (findClient(outClient)) {
+		outClient.getSocket().Close();
 		clientVec.erase(it);
 		status = true;
 	}
@@ -130,3 +133,18 @@ Client& ClientManager::getClient(string name) {
 	return *(new Client());
 }
 
+void ClientManager::populateFDSets() {
+	for (it = clientVec.begin(); it != clientVec.end(); it++) {
+		sm->setDescriptor(&(*it)->getSocket());
+	}
+
+}
+
+void ClientManager::handleExceptions() {
+	for (it = clientVec.begin(); it != clientVec.end(); it++) {
+		sm->HandleExceptionSockets(&(*it)->getSocket());
+		// Save Client
+		// Safely Remove Client
+		removeClient(**it);
+	}
+}

@@ -43,7 +43,7 @@ void GameLoop( ServerManager & boss) {
 		boss.checkSockets();
 
 		// Get the Input from all the Clients and Put them in the Server Mailbox for Processing
-		//boss.getInput();
+		boss.getInput();
 
 		// Process the input from serverMailbox ( Should be a bunch of Commands )
 		//boss.processInput();

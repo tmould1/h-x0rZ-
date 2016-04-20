@@ -12,6 +12,7 @@ void Command::GetClient(Client * actor) {
 	clientActor = actor;
 }
 
+// All Commands Should be Initialized before Executing.  Consider Initialization in Execute
 void Command::Initialize(string inArgs) {
 	cmdArgs = inArgs;
 	splitArgs();
@@ -33,6 +34,12 @@ Command::~Command()
 }
 
 // Command Execute Section
+// Commands From Client
+
+bool DisconnectCommand::Execute() {
+	HaxorSocket * clientSock = &(clientActor->getSocket());
+	sm->releaseClient(clientActor);
+}
 
 bool NewAccountCommand::Execute() {
 	Account * tempAccount;
@@ -65,6 +72,8 @@ bool LoginCommand::Execute() {
         status = true;
         return status;
 }
+
+// Commands From Server
 
 bool LoginCheckCommand::Execute() {
 	bool status = false;

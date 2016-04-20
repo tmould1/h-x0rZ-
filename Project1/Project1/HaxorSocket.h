@@ -15,5 +15,6 @@ public:
 	virtual void Initialize(TCPSocket * tcpSockPtr) = 0;
 	virtual bool IsSet() = 0;
 	virtual int GetID() = 0;
+	virtual void Close() = 0;
 };
 

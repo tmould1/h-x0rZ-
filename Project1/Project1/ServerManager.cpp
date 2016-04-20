@@ -43,6 +43,10 @@ void ServerManager::acquireClient(Client & inClient) {
 	cm->addClient(&inClient);
 }
 
+void ServerManager::releaseClient(Client * outClient) {
+	cm->removeClient(*outClient);
+}
+
 bool ServerManager::isRunning() {
 	return serverStatus;
 }
@@ -55,8 +59,48 @@ void ServerManager::abort() {
 	serverStatus = false;
 }
 
+void ServerManager::initializeFDSets() {
+#ifdef __linux__
+	FD_ZERO(&inSet);
+	FD_ZERO(&outSet);
+	FD_ZERO(&excSet);
+#endif
+}
+
+void ServerManager::getNewSockets() {
+#ifdef __linux__
+	FD_SET(maxDesc = serverSocket, &inSet); 
+#endif
+}
+
+void ServerManager::handleNewConnection() {
+#ifdef __linux__
+	// If Server Socket has something, it's a new connection
+	if (FD_ISSET(serverSocket, &inSet)) {
+		dummyClient = new Client();
+		int sockID;
+		if (dummyClient->assignSocket(servSock)) {
+			cm->addClient(dummyClient);
+			// Successful Assignment
+	}
+		sockID = dummyClient->getSocketID();
+		cout << "SocketID assigned: " << sockID;
+		thread newConnThread(&ServerManager::newConnectionThreadWrapper, sockID);
+		newConnThread.detach();
+}
+	// Otherwise it is I/O
+
+#endif
+}
+
+void ServerManager::Select() {
+#ifdef __linux__
+	select(maxDesc + 1, &inSet, NULL, NULL, &tv);
+#endif
+
+}
 void ServerManager::checkSockets() {
-	int maxDesc, sd, serverSocket = servSock->getSockDesc();
+	int sd, serverSocket = servSock->getSockDesc();
 	Client * dummyClient;
 
 #ifdef __linux__
@@ -65,32 +109,22 @@ void ServerManager::checkSockets() {
 	tv.tv_usec = 500000;
 #endif
 
-#ifdef __linux__
 	// Zero the Set out
-	FD_ZERO(&descSet);
-	// But the Server Listening Port in the Set to Check
-	FD_SET(maxDesc = serverSocket, &descSet);
-#endif
+	initializeFDSets();
 
-#ifdef __linux__
-	select(maxDesc + 1, &descSet, NULL, NULL, &tv);
+	cm->populateFDSets();
+	// Select Interface Populates File Descriptor Lists with Info
+	// Concerning: New Connections, Sockets with Inbound Messages, and Sockets with Outbound Messages
+	Select();
 
-	// If Server Socket has something, it's a new connection
-	if (FD_ISSET(serverSocket, &descSet)) {
-		dummyClient = new Client();
-		int sockID;
-		if (dummyClient->assignSocket(servSock)) {
-			cm->addClient(dummyClient);
-			// Successful Assignment
-		}
-		sockID = dummyClient->getSocketID();
-                cout << "SocketID assigned: " << sockID;
-		thread newConnThread(&ServerManager::newConnectionThreadWrapper, sockID);
-                newConnThread.detach();
-	}
-	// Otherwise it is I/O
+	// Populate new Connections
+	getNewSockets();
+}
 
-#endif
+void ServerManager::getInput() {
+	handleNewConnection();
+	cm->handleExceptions();
+	//Check 
 
 }
 
@@ -211,4 +245,27 @@ bool ServerManager::checkAccount(std::string name , std::string pass , std::stri
 void ServerManager::newConnectionThreadWrapper( int clientID ){
         ServerManager * sm = sm->get();
 	sm->threadNewConnection(clientID);
+}
+
+void ServerManager::setDescriptor(HaxorSocket * thisSocket) {
+#ifdef __linux__
+	if (maxDesc < thisSocket->GetID()) {
+		maxDesc = this->GetID();
+	}
+	FD_ZERO(thisSocket->GetID(), &inSet);
+	FD_ZERO(thisSocket->GetID(), &outSet);
+	FD_ZERO(thisSocket->GetID(), &excSet);
+
+#endif
+}
+
+void ServerManager::HandleExceptionSockets(HaxorSocket * thisSocket) {
+
+#ifdef __linux__
+	if (FD_ISSET(thisSocket->GetID(), &excSet)) {
+		FD_CLR(thisSocket->GetID(), &inSet);
+		FD_CLR(thisSocket->GetID(), &outSet);
+	}
+#endif
+
 }

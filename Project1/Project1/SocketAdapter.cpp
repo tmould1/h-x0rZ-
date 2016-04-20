@@ -45,3 +45,7 @@ void SocketAdapter::Socket()
 {
 	socketID = adaptee->getSockDesc();
 }
+
+void SocketAdapter::Close() {
+	delete adaptee;
+}
