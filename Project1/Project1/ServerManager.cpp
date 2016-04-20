@@ -159,7 +159,10 @@ void ServerManager::threadNewConnection(int clientID) {
 	if (initMsgBuff.find("Login") != std::string::npos) {
 		tempCmd = (*cmdMap)["Login"]->Clone();
 	}
-	else if (initMsgBuff.find("NewAccount") != std::string::npos) {
+	//else if (initMsgBuff.find("NewAccount") != std::string::npos) {
+	//	tempCmd = (*cmdMap)["NewAccount"]->Clone();
+	//}
+	else {
 		tempCmd = (*cmdMap)["NewAccount"]->Clone();
 	}
 	tempCmd->Initialize(initMsgBuff);

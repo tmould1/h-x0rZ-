@@ -13,6 +13,7 @@ bool Client::assignSocket(TCPServerSocket * server) {
 
 Client Client::operator=(const Client obj) {
 	mySock = obj.mySock;
+	return *this;
 }
 
 int Client::getSocketID() {

@@ -34,10 +34,9 @@ void SocketAdapter::Send(std::string msg)
 std::string SocketAdapter::Receive()
 {
 	string message;
-	char* cmessage;
-	while (adaptee->recv((void *)cmessage, msgLength*sizeof(char*)) > 0 ){
-	  message = cmessage;
-        }
+	char* cmessage = new char[msgLength];
+	adaptee->recv((void*)cmessage, msgLength);
+	message = cmessage;
 	return message;
 }
 
