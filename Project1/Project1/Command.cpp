@@ -1,11 +1,14 @@
+
 #include "Command.h"
 #include <iostream>
-
 
 Command::Command()
 {
 	argList = new vector<std::string>();
 	// Populate arglist from CmdList
+}
+
+Command::~Command() {
 }
 
 void Command::GetClient(Client * actor) {
@@ -29,9 +32,6 @@ void Command::splitArgs() {
 	}
 }
 
-Command::~Command()
-{
-}
 
 // Command Execute Section
 // Commands From Client
@@ -39,6 +39,7 @@ Command::~Command()
 bool DisconnectCommand::Execute() {
 	HaxorSocket * clientSock = &(clientActor->getSocket());
 	sm->releaseClient(clientActor);
+	return true;
 }
 
 bool NewAccountCommand::Execute() {
@@ -46,23 +47,31 @@ bool NewAccountCommand::Execute() {
 	string name, pass, ip, email, admin;
 	bool bAdmin = false;
 	bool success = false;
-	name = argList->at(1);
-	pass = argList->at(2);
-	ip = argList->at(3);
-	email = argList->at(4);
-	admin = argList->at(5);
-	if (admin == "true") {
+
+        if ( argList->size() == 6 ) {
+  	  name = argList->at(1);
+	  pass = argList->at(2);
+	  ip = argList->at(3);
+	  email = argList->at(4);
+          admin = argList->at(5);
+	  if (admin == "true") {
 		bAdmin = true;
-	}
-	tempAccount = new Account(name, pass, ip, email, bAdmin);
-	if (sm->AddAccount(*tempAccount)) {
+	  }
+          else {
+     		bAdmin = false;
+	  }
+	  tempAccount = new Account(name, pass, ip, email, bAdmin);
+	  if (sm->AddAccount(*tempAccount)) {
 		success = true;
 		// Success
-	}
-	else {
+	  }
+	  else {
 		// Failure
-	}
-	delete tempAccount;
+	  }
+
+	  delete tempAccount;
+        }
+
 	return success;
 }
 
@@ -71,6 +80,12 @@ bool LoginCommand::Execute() {
 	sm->checkAccount(argList->at(1), argList->at(2), argList->at(3));
         status = true;
         return status;
+}
+
+bool CreateGameCommand::Execute() {
+	Player * pc = clientActor->GetPlayer();
+	myLobby = pc->WhichLobby();
+	myLobby->MakeGame(argList->at(1));
 }
 
 // Commands From Server
@@ -82,8 +97,28 @@ bool LoginCheckCommand::Execute() {
 		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck Login " +argList->at(4));
 	}
 	else if (cmdArgs.find("NewAccount") != std::string::npos) {
-		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck NewAccount " + argList->at(4));
+		sm->SendMessageToSocket(clientActor->getSocket(), "LoginCheck NewAccount " + argList->at(6));
 	}
 	status = true;
 	return status;
+}
+
+// PRECONDITIONS :
+// Assume initialize is called,
+// cmdArgs Populated
+// We have received a client request to play a card, we assume it is legit.
+// RESPONSE : 
+// What Actions should the server take?  
+//    Player must put card from hand into their discard pile
+//****** begin switch
+//    We must apply the effect of the card, (e.g. apply protection, make a guess, compare hands, target player discards hand, trade hands
+//    This may result in someone being marked as "out" (isOut()) for the remainder of the round
+//****** end switch/selection
+//    Player Signals Pass of Turn to Game Instance
+//    Check for Winner
+//    Deal Card
+bool PlayCardCommand::Execute() {
+	//Choose
+	  // Card 1 :
+	    
 }

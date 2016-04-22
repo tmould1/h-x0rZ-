@@ -51,7 +51,9 @@ SocketException::SocketException(const string &message, bool inclSysMsg)
 throw() : userMessage(message) {
 	if (inclSysMsg) {
 		userMessage.append(": ");
+#ifdef __linux__
 		userMessage.append(strerror(errno));
+#endif
 	}
 }
 

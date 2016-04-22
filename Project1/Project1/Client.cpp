@@ -2,6 +2,14 @@
 
 ClientManager* ClientManager::_instance = NULL;
 
+Player* Client::GetPlayer() {
+	return player;
+}
+
+std::string Client::GetName(){
+	account->getLogin();
+}
+
 bool Client::assignSocket(TCPServerSocket * server) {
 	bool status = false;
 	mySock->Initialize(server->accept());
@@ -64,6 +72,7 @@ void Client::setAccount(Account& inAcct) {
 
 
 
+// Client Manager Section BEGIN
 
 ClientManager* ClientManager::get() {
 	if ( _instance == NULL ) {
@@ -71,9 +80,6 @@ ClientManager* ClientManager::get() {
 	}
 	return _instance;
 }
-
-
-// Client Manager Section BEGIN
 
 bool ClientManager::findClient(Client & tClient) {
 	bool status = false;
@@ -88,7 +94,7 @@ bool ClientManager::findClient(Client & tClient) {
 	return status;
 }
 
-Client* ClientManager::findClientById(int tID) {
+Client* ClientManager::findClientByID(int tID) {
 	vector<Client*>::iterator iClient;
 	for (iClient = clientVec.begin(); iClient != clientVec.end(); iClient++) {
 		if ((*iClient)->getSocketID() == tID) {
@@ -151,5 +157,11 @@ void ClientManager::handleExceptions() {
 		// Save Client
 		// Safely Remove Client
 		removeClient(**it);
+	}
+}
+
+void ClientManager::getInputFromClients() {
+	for (it = clientVec.begin(); it != clientVec.end(); it++) {
+		sm->checkInSet(&(*it)->getSocket());
 	}
 }

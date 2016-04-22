@@ -11,6 +11,7 @@
 #include "PracticalSocket.h"
 #include "Client.h"
 #include "Account.h"
+#include "Lobby.h"
 
 class Command;
 class ClientManager;
@@ -34,8 +35,14 @@ private :
 	ClientManager * cm;
 
 	vector<Command *>* cmdPrototypes;
+	vector<Command *> inBox;
+	vector<Command *>::iterator inBoxIterator;
+	vector<Command *> outBox;
+	vector<Command *>::iterator outBoxIterator;
 
 	std::map<std::string, Command *>* cmdMap;
+
+	Lobby * mainLobby;
 
 #ifdef __linux__
 	fd_set inSet, outSet, excSet;
@@ -49,14 +56,12 @@ public:
 	~ServerManager();
 	void acquireClient(Client & inClient);
 	void releaseClient(Client * outClient);
-	//Client* getLastClient();
 	bool isRunning();
     void setRunning();
 	void abort();
 	void checkSockets();
 	string GetMsgFromSocket(HaxorSocket & inSock);
 	void SendMessageToSocket(HaxorSocket & inSock, string message);
-	//void checkNewConnection();
 	void registerClientManager();
 	bool AddAccount(Account & newAccount);
 	bool checkAccount(std::string, std::string, std::string);
@@ -68,10 +73,15 @@ public:
 	void setDescriptor(HaxorSocket *);
 	void HandleExceptionSockets(HaxorSocket *);
 	void Select();
-	void getInput();
-	void processInput();
-	void gameUpdate();
-	void handleOutput();
+	void checkInSet(HaxorSocket *);
+	void checkOutSet(HaxorSocket *);
+
+	void processInput();  // During Input Processing; Clone Needed Commands, Initializing, getClient, Insert to InBox
+	void gameUpdate();    // Iterate through InBox: Executing Commands,
+	                      //  Possibly cloning, init, getclient on outCommands and populating outBox
+	void handleOutput();  // Iterate through outBox:  Executing Commands
+
+	Command * getCommandClone(string cmdName);
 };
 
 

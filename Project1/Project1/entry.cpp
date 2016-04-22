@@ -4,6 +4,7 @@
 
 #include "ServerManager.h"
 #include <iostream>
+#include <signal.h>
 
 void GameLoop( ServerManager & boss );
 
@@ -39,21 +40,21 @@ int main(int argc, char * argv[]) {
 
 void GameLoop( ServerManager & boss) {
 
+#ifdef __linux__
+	signal(SIGPIPE, SIG_IGN);
+#endif
 	while (boss.isRunning()) {
 		// Select Magic is in checkSockets()
 		boss.checkSockets();
 
 		// Get the Input from all the Clients and Put them in the Server Mailbox for Processing
-		boss.getInput();
-
 		// Process the input from serverMailbox ( Should be a bunch of Commands )
-		//boss.processInput();
+		boss.processInput();
 
 		// Do all autonomic game functions
-		//boss.gameUpdate();
-
-		// Load the Client Mailboxes and Send any messages
-		//boss.handleOutput();
+		boss.gameUpdate();
+			// Load the Client Mailboxes and Send any messages
+		boss.handleOutput();
 //                cout << "Every .10secs?" << endl;
 	}
 

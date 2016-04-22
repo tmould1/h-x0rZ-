@@ -13,7 +13,7 @@ const char * accountDir = "../accounts/";
 bool exists(const std::string& );
 
 ServerManager::ServerManager() {
-	servSock = new TCPServerSocket(9999);
+	servSock = new TCPServerSocket(defaultPort);
 	serverStatus = true;
 
     cmdPrototypes = new vector<Command*>();
@@ -26,6 +26,11 @@ ServerManager::ServerManager() {
 	(*cmdMap)["NewAccount"] = cmdPrototypes->at(cmdPrototypes->size()-1);
 	cmdPrototypes->push_back(new LoginCheckCommand());
 	(*cmdMap)["LoginCheck"] = cmdPrototypes->at(cmdPrototypes->size()-1);
+	cmdPrototypes->push_back(new PlayCardCommand());
+	(*cmdMap)["PlayCard"] = cmdPrototypes->at(cmdPrototypes->size()-1);
+
+	// Load the Main Lobby
+	mainLobby = new Lobby();
 }
 
 ServerManager::ServerManager(int port) {
@@ -115,14 +120,6 @@ void ServerManager::checkSockets() {
 	getNewSockets();
 }
 
-void ServerManager::getInput() {
-	handleNewConnection();
-//	cm->handleExceptions();
-	//Check 
-        // cm->getInputFromClients();
-
-}
-
 ServerManager* ServerManager::get() {
 	if (_instance == NULL) {
 		_instance = new ServerManager();
@@ -170,7 +167,7 @@ void ServerManager::threadNewConnection(int clientID) {
 	string initMsgBuff;
 	string cmdName;
 	Command* tempCmd;
-	Client * newClient = cm->findClientById(clientID);
+	Client * newClient = cm->findClientByID(clientID);
 	bool success = false;
 
         cout << " and new connection thread found " << newClient->getSocketID() << endl;
@@ -181,8 +178,8 @@ void ServerManager::threadNewConnection(int clientID) {
         // Mutex is Locked
 
 	// Receive Login or NewAccount
-//	initMsgBuff = newClient->getSocket().Receive();
-	initMsgBuff = "Login Todd Password 127.0.0.1";
+	initMsgBuff = newClient->getSocket().Receive();
+//	initMsgBuff = "Login Todd Password 127.0.0.1";
 
 
 	// Build Command for either
@@ -239,7 +236,7 @@ bool ServerManager::checkAccount(std::string name , std::string pass , std::stri
 }
 
 void ServerManager::newConnectionThreadWrapper( int clientID ){
-        ServerManager * sm = sm->get();
+    ServerManager * sm = sm->get();
 	sm->threadNewConnection(clientID);
 }
 
@@ -268,4 +265,56 @@ void ServerManager::HandleExceptionSockets(HaxorSocket * thisSocket) {
         }
 #endif
 
+}
+
+void ServerManager::checkInSet( HaxorSocket * thisSocket) {
+#ifdef __linux__
+	Command * myCommand;
+	string inMsg;
+        string commandName;
+	int sockID;//thisSocket->GetID();
+	Client * thisClient; //cm->findClientByID(sockID);
+	if (thisSocket->IsSet()) {
+		sockID = thisSocket->GetID();
+		thisClient = cm->findClientByID(sockID);
+		if (FD_ISSET(sockID, &inSet)) {
+			inMsg = GetMsgFromSocket(*thisSocket);
+			commandName = inMsg.at(0);
+			myCommand = (*cmdMap)[commandName]->Clone();
+			myCommand->GetClient(thisClient);
+			myCommand->Initialize(inMsg);
+			inBox.push_back(myCommand);
+		}
+	}
+#endif
+}
+
+// May Not be necessary.
+void ServerManager::checkOutSet(HaxorSocket * thisSocket) {
+
+}
+
+
+//FD_SETs are populated,
+void ServerManager::processInput() {
+	handleNewConnection();
+	//	cm->handleExceptions();
+	//Check 
+	cm->getInputFromClients();
+
+}
+
+void ServerManager::gameUpdate() {
+	for (inBoxIterator = inBox.begin(); inBoxIterator != inBox.end(); inBoxIterator++) {
+		(*inBoxIterator)->Execute();
+	}
+}
+void ServerManager::handleOutput() {
+	for (outBoxIterator = outBox.begin(); outBoxIterator != outBox.end(); outBoxIterator++) {
+		(*outBoxIterator)->Execute();
+	}
+}
+
+Command * ServerManager::getCommandClone(string name) {
+	return (*cmdMap)[name]->Clone();
 }

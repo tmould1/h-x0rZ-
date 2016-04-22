@@ -6,6 +6,7 @@
 #include "Account.h"
 #include "SocketAdapter.h"
 #include "Command.h"
+#include "Player.h"
 
 class Command;
 class ServerManager;
@@ -20,7 +21,8 @@ private :
 	vector<Command*> outMsg; // From Server to Client ( Messages to send to client from server )
 	ServerManager * sm;
 	Account * account;
-
+	Player * player;
+	std::string name;
 
 public:
 	Client operator=(const Client obj);
@@ -34,6 +36,8 @@ public:
 	Account & getAccount();
 	void setAccount(Account &);
 	HaxorSocket & getSocket();
+	Player * GetPlayer();
+	std::string GetName();
 };
 
 class ClientManager {
@@ -41,7 +45,7 @@ private:
 	static ClientManager* _instance;
 	vector<Client*> clientVec;
 	vector<Client*>::iterator it;
-	Client zeroClient();
+	//Client zeroClient();
 	ServerManager * sm;
 protected:
 	bool findClient(Client & tClient);
@@ -52,10 +56,12 @@ public:
 	bool addClient(Client * inClient);
 	bool removeClient( Client & outClient );
 	Client & getClient( string name );
-	Client * findClientById(int tID);
+	Client * findClientByID(int tID);
 	void populateFDSets();
 	void handleExceptions();
 	void Initialize();
+	void getInputFromClients();
+	void CheckInSet();
 
 };
 

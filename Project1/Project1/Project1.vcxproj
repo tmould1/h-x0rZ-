@@ -111,12 +111,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Account.cpp" />
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Deck.cpp" />
     <ClCompile Include="entry.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Hand.cpp" />
     <ClCompile Include="HaxorSocket.cpp" />
+    <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="NewAccountCommand.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PracticalSocket.cpp" />
     <ClCompile Include="ServerManager.cpp" />
     <ClCompile Include="SocketAdapter.cpp" />
@@ -124,11 +130,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Deck.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Hand.h" />
     <ClInclude Include="HaxorSocket.h" />
+    <ClInclude Include="Lobby.h" />
     <ClInclude Include="NewAccountCommand.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PracticalSocket.h" />
     <ClInclude Include="ServerManager.h" />
     <ClInclude Include="SocketAdapter.h" />
